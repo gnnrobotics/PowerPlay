@@ -15,11 +15,11 @@ public class ClawSubsystem extends SubsystemBase {
     private final Servo leftServo;
     private final Servo rightServo;
 
-    public static final double leftOpen = 537.7;
-    public static final double leftClosed = 537.7;
+    public static final double leftOpen = 0.5;
+    public static final double leftClosed = 0.5;
 
-    public static final double rightOpen = 537.7;
-    public static final double rightClosed = 537.7;
+    public static final double rightOpen = 0.9;
+    public static final double rightClosed = 0.9;
 
     public ClawSubsystem(final HardwareMap hMap, final String name) {
         leftServo = hMap.get(Servo.class, "leftServo");
@@ -31,16 +31,16 @@ public class ClawSubsystem extends SubsystemBase {
      * Grabs a stone.
      */
     public void grab() {
-        leftServo.setPosition(0.76);
-        rightServo.setPosition(0.76);
+        leftServo.setPosition(leftClosed);
+        rightServo.setPosition(rightClosed);
     }
 
     /**
      * Releases a stone.
      */
     public void release() {
-        leftServo.setPosition(0);
-        rightServo.setPosition(0);
+        leftServo.setPosition(leftOpen);
+        rightServo.setPosition(rightOpen);
     }
 
 }
