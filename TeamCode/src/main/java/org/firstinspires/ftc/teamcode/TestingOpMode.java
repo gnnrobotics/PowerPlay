@@ -5,13 +5,12 @@ import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-import robot.ClawSubsystem;
-import robot.Grab;
-import robot.Release;
+import robot.subsystems.ClawSubsystem;
+import robot.commands.Grab;
+import robot.commands.Release;
 
 @TeleOp(name = "TestingClaw")
 
@@ -21,7 +20,7 @@ public class TestingOpMode extends CommandOpMode {
     private ClawSubsystem m_claw;
     private Grab m_grabCommand;
     private Release m_releaseCommand;
-    private Button m_grabButton, m_releaseButton;
+    Button m_toggleButton;
 
     @Override
     public void initialize() {
@@ -32,10 +31,10 @@ public class TestingOpMode extends CommandOpMode {
         m_grabCommand = new Grab(m_claw);
         m_releaseCommand = new Release(m_claw);
 
-        m_grabButton = (new GamepadButton(m_driverOp, GamepadKeys.Button.A))
-                .whenPressed(m_grabCommand);
-        m_releaseButton = (new GamepadButton(m_driverOp, GamepadKeys.Button.B))
-                .whenPressed(m_releaseCommand);
+        m_toggleButton = new GamepadButton(m_driverOp, GamepadKeys.Button.A).toggleWhenPressed(m_grabCommand, m_releaseCommand);
+
+       // m_claw.setDefaultCommand(m_grabCommand); // this is necessary to state the default state
     }
+
 
 }
