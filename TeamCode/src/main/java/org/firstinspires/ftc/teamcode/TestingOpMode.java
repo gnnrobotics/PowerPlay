@@ -7,11 +7,14 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.robot.commands.Drive;
+import org.firstinspires.ftc.teamcode.robot.commands.DriveCopy;
 import org.firstinspires.ftc.teamcode.robot.commands.setSpecificHeight;
 import org.firstinspires.ftc.teamcode.robot.commands.spinSusan;
 import org.firstinspires.ftc.teamcode.robot.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.robot.commands.Grab;
 import org.firstinspires.ftc.teamcode.robot.commands.Release;
+import org.firstinspires.ftc.teamcode.robot.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.robot.subsystems.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.robot.subsystems.SusanSubsystem;
 
@@ -20,6 +23,9 @@ import org.firstinspires.ftc.teamcode.robot.subsystems.SusanSubsystem;
 public class TestingOpMode extends CommandOpMode {
 
     private GamepadEx m_driverOp;
+
+    private DriveSubsystem m_drive;
+    private Drive m_driveCommand;
 
     private ClawSubsystem m_claw;;
     private Grab m_grabCommand;
@@ -35,10 +41,13 @@ public class TestingOpMode extends CommandOpMode {
 
     @Override
     public void initialize() {
-
+// organize by subsystems then commands
         m_driverOp = new GamepadEx(gamepad1);
 
-        m_claw = new ClawSubsystem(hardwareMap, "Claw");
+        m_drive = new DriveSubsystem(hardwareMap);
+        m_driveCommand = new Drive(m_drive, () -> m_driverOp.getLeftX(), () -> m_driverOp.getLeftY(), () -> m_driverOp.getRightX());
+
+        m_claw = new ClawSubsystem(hardwareMap);
         m_grabCommand = new Grab(m_claw);
         m_releaseCommand = new Release(m_claw);
 
@@ -50,10 +59,12 @@ public class TestingOpMode extends CommandOpMode {
 
         m_toggleButton = new GamepadButton(m_driverOp, GamepadKeys.Button.A).toggleWhenPressed(m_grabCommand, m_releaseCommand);
 
+        register(m_drive);
         register(m_claw);
         register(m_lift);
         register(m_susan);
 
+        m_drive.setDefaultCommand(m_driveCommand);
         m_lift.setDefaultCommand(m_heightCommand);
         m_susan.setDefaultCommand(m_spinCommand);
     }

@@ -21,10 +21,9 @@ public class ClawSubsystem extends SubsystemBase {
     public static final double rightOpen = 0.4;
     public static final double rightClosed = 1;
 
-    public ClawSubsystem(final HardwareMap hMap, final String name) {
+    public ClawSubsystem(final HardwareMap hMap) {
         leftServo = hMap.get(Servo.class, "leftServo");
         rightServo = hMap.get(Servo.class, "rightServo");
-
     }
 
     /**
