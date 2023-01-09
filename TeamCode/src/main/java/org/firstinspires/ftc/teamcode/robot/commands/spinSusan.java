@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot.commands;
 
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.susanSpeed;
+
 import com.arcrobotics.ftclib.command.CommandBase;
 import org.firstinspires.ftc.teamcode.robot.subsystems.SusanSubsystem;
 
@@ -30,10 +32,10 @@ public class spinSusan extends CommandBase {
             m_SusanSubsystem.spinSusan(0);
         }
         else if (m_left.getAsBoolean()) {
-            m_SusanSubsystem.spinSusan(0.2); // change to constant
+            m_SusanSubsystem.spinSusan(susanSpeed); // change to constant
         }
         else if (m_right.getAsBoolean()) {
-            m_SusanSubsystem.spinSusan(-0.2); // change to negative of constant
+            m_SusanSubsystem.spinSusan(-susanSpeed); // change to negative of constant
         }
         else {
             m_SusanSubsystem.spinSusan(0);

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.fineMotor;
+
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
@@ -7,8 +9,8 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.robot.commands.Drive;
-import org.firstinspires.ftc.teamcode.robot.commands.DriveCopy;
+import org.firstinspires.ftc.teamcode.robot.commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.robot.commands.FineDriveCommand;
 import org.firstinspires.ftc.teamcode.robot.commands.setSpecificHeight;
 import org.firstinspires.ftc.teamcode.robot.commands.spinSusan;
 import org.firstinspires.ftc.teamcode.robot.subsystems.ClawSubsystem;
@@ -25,7 +27,8 @@ public class TestingOpMode extends CommandOpMode {
     private GamepadEx m_driverOp;
 
     private DriveSubsystem m_drive;
-    private Drive m_driveCommand;
+    Button m_fineMotorButton;
+    private DriveCommand m_driveCommand;
 
     private ClawSubsystem m_claw;;
     private Grab m_grabCommand;
@@ -36,7 +39,7 @@ public class TestingOpMode extends CommandOpMode {
 
     private SusanSubsystem m_susan;
     private spinSusan m_spinCommand;
-
+    private DriveCommand m_fineDriveCommand;
     Button m_toggleButton;
 
     @Override
@@ -45,7 +48,8 @@ public class TestingOpMode extends CommandOpMode {
         m_driverOp = new GamepadEx(gamepad1);
 
         m_drive = new DriveSubsystem(hardwareMap);
-        m_driveCommand = new Drive(m_drive, () -> m_driverOp.getLeftX(), () -> m_driverOp.getLeftY(), () -> m_driverOp.getRightX());
+        m_driveCommand = new DriveCommand(m_drive, () -> m_driverOp.getLeftX(), () -> m_driverOp.getLeftY(), () -> m_driverOp.getRightX());
+        m_fineMotorButton = new GamepadButton(m_driverOp, GamepadKeys.Button.LEFT_STICK_BUTTON) // DriveCommand(m_drive, () -> m_driverOp.getLeftX() * fineMotor, () -> m_driverOp.getLeftY() * fineMotor, () -> m_driverOp.getRightX() * fineMotor);
 
         m_claw = new ClawSubsystem(hardwareMap);
         m_grabCommand = new Grab(m_claw);

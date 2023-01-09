@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.robot.subsystems;
 
-import com.arcrobotics.ftclib.command.CommandScheduler;
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.leftClosed;
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.leftOpen;
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.rightClosed;
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.rightOpen;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,12 +18,6 @@ public class ClawSubsystem extends SubsystemBase {
 
     private final Servo leftServo;
     private final Servo rightServo;
-
-    public static final double leftOpen = 0.4;
-    public static final double leftClosed = 0;
-
-    public static final double rightOpen = 0.4;
-    public static final double rightClosed = 1;
 
     public ClawSubsystem(final HardwareMap hMap) {
         leftServo = hMap.get(Servo.class, "leftServo");

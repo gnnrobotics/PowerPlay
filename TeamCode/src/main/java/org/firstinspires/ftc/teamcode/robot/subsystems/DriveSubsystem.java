@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot.subsystems;
 
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.fineMotor;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -19,11 +21,11 @@ public class DriveSubsystem extends SubsystemBase {
         m_backLeft = hMap.get(DcMotorEx.class, "backLeft");
         m_backRight = hMap.get(DcMotorEx.class, "backRight");
 
-        m_frontRight.setDirection(DcMotorEx.Direction.REVERSE);
-        m_backRight.setDirection(DcMotorEx.Direction.REVERSE);
+       m_frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+       m_backLeft.setDirection(DcMotorEx.Direction.REVERSE);
     }
 
-    public void drive(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower) {
+    public void drivePower(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower) {
         m_frontLeft.setPower(frontLeftPower);
         m_frontRight.setPower(frontRightPower);
         m_backLeft.setPower(backLeftPower);

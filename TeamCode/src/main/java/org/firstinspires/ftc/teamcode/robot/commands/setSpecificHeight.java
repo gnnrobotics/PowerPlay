@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot.commands;
 
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.liftSpeed;
+
 import com.arcrobotics.ftclib.command.CommandBase;
 import org.firstinspires.ftc.teamcode.robot.subsystems.LiftSubsystem;
 
@@ -30,10 +32,10 @@ public class setSpecificHeight extends CommandBase {
             m_LiftSubsystem.setSpecificHeight(0);
         }
         else if (m_left.getAsDouble() == 1) {
-            m_LiftSubsystem.setSpecificHeight(0.5); // change to constant
+            m_LiftSubsystem.setSpecificHeight(liftSpeed); // change to constant
         }
         else if (m_right.getAsDouble() == 1) {
-            m_LiftSubsystem.setSpecificHeight(-0.5); // change to negative of constant
+            m_LiftSubsystem.setSpecificHeight(-liftSpeed); // change to negative of constant
         }
         else {
             m_LiftSubsystem.setSpecificHeight(0);
