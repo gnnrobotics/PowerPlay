@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.robot.componentConstants.fineMotor;
-
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
@@ -27,8 +25,8 @@ public class TestingOpMode extends CommandOpMode {
     private GamepadEx m_driverOp;
 
     private DriveSubsystem m_drive;
-    Button m_fineMotorButton;
     private DriveCommand m_driveCommand;
+    Button m_fineDriveButton;
 
     private ClawSubsystem m_claw;;
     private Grab m_grabCommand;
@@ -39,7 +37,7 @@ public class TestingOpMode extends CommandOpMode {
 
     private SusanSubsystem m_susan;
     private spinSusan m_spinCommand;
-    private DriveCommand m_fineDriveCommand;
+    private FineDriveCommand m_fineDriveCommand;
     Button m_toggleButton;
 
     @Override
@@ -49,7 +47,7 @@ public class TestingOpMode extends CommandOpMode {
 
         m_drive = new DriveSubsystem(hardwareMap);
         m_driveCommand = new DriveCommand(m_drive, () -> m_driverOp.getLeftX(), () -> m_driverOp.getLeftY(), () -> m_driverOp.getRightX());
-        m_fineMotorButton = new GamepadButton(m_driverOp, GamepadKeys.Button.LEFT_STICK_BUTTON) // DriveCommand(m_drive, () -> m_driverOp.getLeftX() * fineMotor, () -> m_driverOp.getLeftY() * fineMotor, () -> m_driverOp.getRightX() * fineMotor);
+        m_fineDriveCommand = new FineDriveCommand(m_drive, () -> m_driverOp.getLeftX(), () -> m_driverOp.getLeftY(), () -> m_driverOp.getRightX());
 
         m_claw = new ClawSubsystem(hardwareMap);
         m_grabCommand = new Grab(m_claw);
@@ -61,6 +59,7 @@ public class TestingOpMode extends CommandOpMode {
         m_susan = new SusanSubsystem(hardwareMap, "Susan");
         m_spinCommand = new spinSusan(m_susan, () -> m_driverOp.getButton(GamepadKeys.Button.LEFT_BUMPER), () -> m_driverOp.getButton(GamepadKeys.Button.RIGHT_BUMPER));
 
+        m_fineDriveButton = new GamepadButton(m_driverOp, GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(m_fineDriveCommand);
         m_toggleButton = new GamepadButton(m_driverOp, GamepadKeys.Button.A).toggleWhenPressed(m_grabCommand, m_releaseCommand);
 
         register(m_drive);
