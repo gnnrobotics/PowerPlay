@@ -16,5 +16,7 @@ public class componentConstants {
     public static final double liftSpeed = 0.5;
 
     // Susan constant
-    public static final double susanSpeed = 0.5;
+    public static final double susanSpeed = 0.35;
+
+    // See respective lift and susan PIDs for their constants—putting them here would be too messy
     }
