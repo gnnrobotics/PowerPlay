@@ -4,7 +4,7 @@ public class componentConstants {
 
     // Drive constant
 
-    public static final double fineMotor = 0.1;
+    public static final double fineMotor = 0.2;
 
     // Servo constants
     public static final double leftOpen = 0.6;
@@ -17,8 +17,4 @@ public class componentConstants {
 
     // Susan constant
     public static final double susanSpeed = 0.5;
-
-
-
-
     }

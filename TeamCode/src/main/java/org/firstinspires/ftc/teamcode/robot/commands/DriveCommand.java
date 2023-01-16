@@ -32,7 +32,7 @@ public class DriveCommand extends CommandBase {
     {
         double forwardSpeed = m_forwardSpeed.getAsDouble();
         double strafeSpeed = m_strafeSpeed.getAsDouble();
-        double turnSpeed = -m_turnSpeed.getAsDouble();
+        double turnSpeed = m_turnSpeed.getAsDouble();
 
         double denominator = Math.max(Math.abs(forwardSpeed) + Math.abs(strafeSpeed) + Math.abs(turnSpeed), 1);
         double frontLeftPower = (forwardSpeed + strafeSpeed + turnSpeed) / denominator;

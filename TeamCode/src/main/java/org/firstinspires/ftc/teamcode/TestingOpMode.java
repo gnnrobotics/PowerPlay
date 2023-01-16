@@ -59,7 +59,7 @@ public class TestingOpMode extends CommandOpMode {
         m_susan = new SusanSubsystem(hardwareMap, "Susan");
         m_spinCommand = new spinSusan(m_susan, () -> m_driverOp.getButton(GamepadKeys.Button.LEFT_BUMPER), () -> m_driverOp.getButton(GamepadKeys.Button.RIGHT_BUMPER));
 
-        m_fineDriveButton = new GamepadButton(m_driverOp, GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(m_fineDriveCommand);
+        m_fineDriveButton = new GamepadButton(m_driverOp, GamepadKeys.Button.LEFT_STICK_BUTTON).whenHeld(m_fineDriveCommand);
         m_toggleButton = new GamepadButton(m_driverOp, GamepadKeys.Button.A).toggleWhenPressed(m_grabCommand, m_releaseCommand);
 
         register(m_drive);
