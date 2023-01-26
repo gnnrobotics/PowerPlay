@@ -20,16 +20,17 @@ public class LiftSubsystem extends SubsystemBase {
 
     public LiftSubsystem(final HardwareMap hMap, final String name) {
         liftMotor = hMap.get(DcMotorEx.class, "liftMotor");
-        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
     // abstraction for setting lift height
     public void setSpecificHeight(double liftSpeed) // set up command where you can eventually just specify down, low, medium, and high and have it go there
     {
-
-
         liftMotor.setPower(liftSpeed);
+    }
+    public double getEncoder()
+    {
+        return liftMotor.getCurrentPosition();
     }
 
 }
