@@ -32,5 +32,6 @@ public class LiftSubsystem extends SubsystemBase {
     {
         return liftMotor.getCurrentPosition();
     }
+    public
 
 }

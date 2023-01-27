@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.robot.commands.DriveCommand;
@@ -28,8 +29,8 @@ public class LiftPIDTesting extends CommandOpMode {
 
     private LiftSubsystem m_lift;
     private liftPIDCommand m_liftPID;
-    private static double p = 0, i = 0, d = 0, f = 0;
-    private int target = 0;
+    public static double p = 0, i = 0, d = 0, f = 0;
+    public static int target = 0;
 
     @Override
     public void initialize() {
@@ -40,7 +41,7 @@ public class LiftPIDTesting extends CommandOpMode {
 
         m_liftPID = new liftPIDCommand(m_lift, () -> target, () -> p, () -> i, () -> d, () -> f);
         register(m_lift);
-
+        System.out.println(target);
         m_lift.setDefaultCommand(m_liftPID);
     }
     public void run() {

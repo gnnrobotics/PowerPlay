@@ -71,6 +71,4 @@ public class TestingOpMode extends CommandOpMode {
         m_lift.setDefaultCommand(m_heightCommand);
         m_susan.setDefaultCommand(m_spinCommand);
     }
-
-
 }
