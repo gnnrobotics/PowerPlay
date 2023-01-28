@@ -45,6 +45,7 @@ public class LiftPIDTesting extends CommandOpMode {
         m_lift.setDefaultCommand(m_liftPID);
     }
     public void run() {
+        super.run();
         telemetry.addData("pos", m_lift.getEncoder());
         telemetry.addData("target", target);
         telemetry.update();
