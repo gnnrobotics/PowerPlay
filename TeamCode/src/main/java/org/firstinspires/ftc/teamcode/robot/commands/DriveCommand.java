@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.robot.subsystems.DriveSubsystem;
 import java.util.function.DoubleSupplier;
 
 public class DriveCommand extends CommandBase {
-// eventually change to drive teleop or smth
 
     // The subsystem the command runs on
     private final DriveSubsystem m_DriveSubsystem;

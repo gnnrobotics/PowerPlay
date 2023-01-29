@@ -29,8 +29,8 @@ public class LiftPIDTesting extends CommandOpMode {
 
     private LiftSubsystem m_lift;
     private liftPIDCommand m_liftPID;
-    public static double p = 0, i = 0, d = 0, f = 0;
-    public static int target = 0;
+    public static double p = 0, i = 0, d = 0, mg = 0;
+    public static double target = 200;
 
     @Override
     public void initialize() {
@@ -39,7 +39,7 @@ public class LiftPIDTesting extends CommandOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         m_lift = new LiftSubsystem(hardwareMap, "Lift");
 
-        m_liftPID = new liftPIDCommand(m_lift, () -> target, () -> p, () -> i, () -> d, () -> f);
+        m_liftPID = new liftPIDCommand(m_lift, () -> target, () -> p, () -> i, () -> d, () -> mg);
         register(m_lift);
         System.out.println(target);
         m_lift.setDefaultCommand(m_liftPID);
@@ -48,8 +48,7 @@ public class LiftPIDTesting extends CommandOpMode {
         super.run();
         telemetry.addData("pos", m_lift.getEncoder());
         telemetry.addData("target", target);
+        telemetry.addData("power", m_lift.getPower());
         telemetry.update();
     }
-
-
 }

@@ -19,11 +19,20 @@ public class SusanSubsystem extends SubsystemBase {
 
     public SusanSubsystem(final HardwareMap hMap, final String name) {
         susanMotor = hMap.get(DcMotorEx.class, "susanMotor");
+        susanMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        susanMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         susanMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    public void spinSusan(double spinSpeed)
-    {
+    public void spinSusan(double spinSpeed) {
+
         susanMotor.setPower(spinSpeed);
+    }
+    public double getEncoder() {
+
+        return susanMotor.getCurrentPosition();
+    }
+    public double getPower() {
+        return susanMotor.getPower();
     }
 }
