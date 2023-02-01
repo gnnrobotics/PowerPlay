@@ -27,21 +27,38 @@ import org.firstinspires.ftc.teamcode.robot.subsystems.SusanSubsystem;
 
 public class LiftPIDTesting extends CommandOpMode {
 
+    Button m_toggleButton;
+
     private LiftSubsystem m_lift;
     private liftPIDCommand m_liftPID;
+    private GamepadEx m_driverOp;
+    private Grab m_grabCommand;
+    private Release m_releaseCommand;
+
     public static double p = 0, i = 0, d = 0, mg = 0;
     public static double target = 200;
+    private ClawSubsystem m_claw;
 
     @Override
     public void initialize() {
         // organize by subsystems then commands
 
+        m_driverOp = new GamepadEx(gamepad1);
+
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         m_lift = new LiftSubsystem(hardwareMap, "Lift");
-
+        m_claw = new ClawSubsystem(hardwareMap);
         m_liftPID = new liftPIDCommand(m_lift, () -> target, () -> p, () -> i, () -> d, () -> mg);
+
+        m_claw = new ClawSubsystem(hardwareMap);
+        m_grabCommand = new Grab(m_claw);
+        m_releaseCommand = new Release(m_claw);
+
+        m_toggleButton = new GamepadButton(m_driverOp, GamepadKeys.Button.A).toggleWhenPressed(m_grabCommand, m_releaseCommand);
+
         register(m_lift);
-        System.out.println(target);
+        register(m_claw);
+
         m_lift.setDefaultCommand(m_liftPID);
     }
     public void run() {
