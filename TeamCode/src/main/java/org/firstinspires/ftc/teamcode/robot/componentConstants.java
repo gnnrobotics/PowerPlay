@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-public class componentConstants {
+import java.util.function.DoubleSupplier;
+
+public class componentConstants { // use 3123's code
 
     // Drive constant
 
@@ -12,11 +14,22 @@ public class componentConstants {
     public static final double rightOpen = 0.4;
     public static final double rightClosed = 1;
 
-    // Lift constant
+    // Lift constants
     public static final double liftSpeed = 0.5;
+    public static final DoubleSupplier downLevel = () -> 0;
+    public static final DoubleSupplier groundJLevel = () -> 150;
+    public static final DoubleSupplier lowLevel = () -> 1650;
+    public static final DoubleSupplier mediumLevel = () -> 2850;
+    public static final DoubleSupplier highLevel = () -> 4000;
+    public enum Level {
+        DOWN,
+        GROUND_J,
+        LOW,
+        MEDIUM,
+        HIGH
+    }
 
     // Susan constant
     public static final double susanSpeed = 0.35;
-
     // See respective lift and susan PIDs for their constants—putting them here would be too messy
     }

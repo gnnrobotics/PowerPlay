@@ -1,5 +1,11 @@
 package org.firstinspires.ftc.teamcode.robot.commands;
 
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.downLevel;
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.groundJLevel;
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.highLevel;
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.lowLevel;
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.mediumLevel;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -9,6 +15,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.robot.componentConstants;
 import org.firstinspires.ftc.teamcode.robot.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.robot.subsystems.LiftSubsystem;
 
@@ -32,6 +39,36 @@ public class liftPIDCommand extends CommandBase {
         m_LiftSubsystem = subsystem;
 
         target = targetPosition;
+
+        p = () -> 0.05;
+        i = () -> 0;
+        d = () -> 0.00045;
+        mg = () -> 0.001;
+
+        addRequirements(m_LiftSubsystem);
+    }
+    public liftPIDCommand(LiftSubsystem subsystem, componentConstants.Level level) {
+        m_LiftSubsystem = subsystem;
+
+        DoubleSupplier target = () -> 0;
+
+        switch(level) {
+            case DOWN:
+                target = downLevel;
+                break;
+            case GROUND_J:
+                target = groundJLevel;
+                break;
+            case LOW:
+                target = lowLevel;
+                break;
+            case MEDIUM:
+                target = mediumLevel;
+                break;
+            case HIGH:
+                target = highLevel;
+                break;
+        }
 
         p = () -> 0.05;
         i = () -> 0;
