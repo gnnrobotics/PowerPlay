@@ -71,4 +71,12 @@ public class TestingOpMode extends CommandOpMode {
         m_lift.setDefaultCommand(m_heightCommand);
         m_susan.setDefaultCommand(m_spinCommand);
     }
+    public void run() {
+        super.run();
+        telemetry.addData("fL", m_drive.getFL());
+        telemetry.addData("fR", m_drive.getFR());
+        telemetry.addData("bL", m_drive.getBL());
+        telemetry.addData("bR",m_drive.getBR());
+        telemetry.update();
+    }
 }

@@ -19,7 +19,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_frontLeft = hMap.get(DcMotorEx.class, "frontLeft");
         m_frontRight = hMap.get(DcMotorEx.class, "frontRight");
         m_backLeft = hMap.get(DcMotorEx.class, "backLeft");
-        m_backRight = hMap.get(DcMotorEx.class, "backRight");
+        m_backRight = hMap.get(DcMotorEx.class,                     "backRight");
 
        m_frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
        m_backLeft.setDirection(DcMotorEx.Direction.REVERSE);
@@ -30,5 +30,17 @@ public class DriveSubsystem extends SubsystemBase {
         m_frontRight.setPower(frontRightPower);
         m_backLeft.setPower(backLeftPower);
         m_backRight.setPower(backRightPower);
+    }
+    public double getFL(){
+        return m_frontLeft.getPower();
+    }
+    public double getFR(){
+        return m_frontRight.getPower();
+    }
+    public double getBL(){
+        return m_backLeft.getPower();
+    }
+    public double getBR(){
+        return m_backRight.getPower();
     }
 }

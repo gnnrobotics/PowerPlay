@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.c_subsystems.auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -15,11 +16,13 @@ import org.firstinspires.ftc.teamcode.d_roadrunner.trajectorysequence.Trajectory
 
 import java.util.List;
 
+*/
 /**
  * A subsystem that uses the {@link MecanumDrive} class.
  * This periodically calls {@link MecanumDrive#update()} which runs the internal
  * state machine for the mecanum drive. All movement/following is async to fit the paradigm.
- */
+ *//*
+
 public class MecanumSubsystem extends SubsystemBase {
 
 	private final MecanumDrive drive;
@@ -115,3 +118,4 @@ public class MecanumSubsystem extends SubsystemBase {
 	}
 
 }
+*/

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.b_commands.auto;
+/* package org.firstinspires.ftc.teamcode.b_commands.auto;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
@@ -40,3 +40,4 @@ public class TrajectoryFollowerCommand extends CommandBase {
 	}
 
 }
+*/
