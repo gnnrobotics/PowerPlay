@@ -1,13 +1,13 @@
-/* package org.firstinspires.ftc.teamcode.b_commands.auto;
+package org.firstinspires.ftc.teamcode.robot.commands.auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.CommandBase;
 
-//import org.firstinspires.ftc.teamcode.c_subsystems.auto.AprilTagSubsystem;
-//import org.firstinspires.ftc.teamcode.c_subsystems.auto.MecanumSubsystem;
-//import org.firstinspires.ftc.teamcode.d_roadrunner.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.robot.subsystems.auto.AprilTagSubsystem;
+import org.firstinspires.ftc.teamcode.robot.subsystems.auto.MecanumSubsystem;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-public class ParkCommand extends CommandBase {
+public class ParkCommand extends CommandBase { // DON'T REALLY NEED JUST USE TRAJECTORY FOLLOWER COMMAND
 	private static final int startX = 36, startY = 65, startH = 90;
 	private final MecanumSubsystem  drive;
 	private final AprilTagSubsystem tagSubsystem;
@@ -81,4 +81,3 @@ public class ParkCommand extends CommandBase {
 		}
 	}
 }
- */

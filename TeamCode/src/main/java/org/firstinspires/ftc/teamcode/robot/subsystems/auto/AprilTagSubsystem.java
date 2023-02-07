@@ -1,5 +1,4 @@
-/*
-package org.firstinspires.ftc.teamcode.c_subsystems.auto;
+package org.firstinspires.ftc.teamcode.robot.subsystems.auto;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -142,4 +141,4 @@ public class AprilTagSubsystem extends SubsystemBase {
 	public enum ParkingZone {
 		LEFT, CENTER, RIGHT, NONE
 	}
-}*/
+}

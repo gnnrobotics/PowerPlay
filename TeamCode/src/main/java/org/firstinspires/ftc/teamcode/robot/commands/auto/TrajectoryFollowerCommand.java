@@ -1,9 +1,9 @@
-/* package org.firstinspires.ftc.teamcode.b_commands.auto;
+package org.firstinspires.ftc.teamcode.robot.commands.auto;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
-import org.firstinspires.ftc.teamcode.c_subsystems.auto.MecanumSubsystem;
-import org.firstinspires.ftc.teamcode.d_roadrunner.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.robot.subsystems.auto.MecanumSubsystem;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 public class TrajectoryFollowerCommand extends CommandBase {
 
@@ -40,4 +40,3 @@ public class TrajectoryFollowerCommand extends CommandBase {
 	}
 
 }
-*/

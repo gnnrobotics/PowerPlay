@@ -1,5 +1,4 @@
-/*
- * Copyright (c) 2021 OpenFTC Team
+/* * Copyright (c) 2021 OpenFTC Team
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,10 +15,9 @@
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-/*
-package org.firstinspires.ftc.teamcode.c_subsystems.auto;
+ * SOFTWARE.*/
+
+package org.firstinspires.ftc.teamcode.robot.subsystems.auto;
 
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.CvType;
@@ -38,7 +36,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 
 public class AprilTagPipeline extends OpenCvPipeline {
-	private final Object                       detectionsUpdateSync = new Object();
+	private final Object detectionsUpdateSync = new Object();
 	private final Object  decimationSync = new Object();
 	Mat cameraMatrix;
 	Scalar blue  = new Scalar(7, 197, 235, 255);
@@ -169,9 +167,7 @@ public class AprilTagPipeline extends OpenCvPipeline {
 	 * @param rvec         the rotation vector of the detection
 	 * @param tvec         the translation vector of the detection
 	 * @param cameraMatrix the camera matrix used when finding the detection
-	 */
-
-/*
+**/
 	void drawAxisMarker(Mat buf, double length, int thickness, Mat rvec, Mat tvec, Mat cameraMatrix) {
 		// The points in 3D space we wish to project onto the 2D image plane.
 		// The origin of the coordinate space is assumed to be in the center of the detection.
@@ -243,9 +239,7 @@ public class AprilTagPipeline extends OpenCvPipeline {
 	 * @param tagsizeX     the original width of the tag
 	 * @param tagsizeY     the original height of the tag
 	 * @return the 6DOF pose of the camera relative to the tag
-	 */
-
-/*
+**/
 	Pose poseFromTrapezoid(Point[] points, Mat cameraMatrix, double tagsizeX, double tagsizeY) {
 		// The actual 2d points of the tag detected in the image
 		MatOfPoint2f points2d = new MatOfPoint2f(points);
@@ -269,7 +263,6 @@ public class AprilTagPipeline extends OpenCvPipeline {
 	 * A simple container to hold both rotation and translation
 	 * vectors, which together form a 6DOF pose.
 	 */
-/*
 	class Pose {
 		Mat rvec;
 		Mat tvec;
@@ -285,4 +278,3 @@ public class AprilTagPipeline extends OpenCvPipeline {
 		}
 	}
 }
-*/
