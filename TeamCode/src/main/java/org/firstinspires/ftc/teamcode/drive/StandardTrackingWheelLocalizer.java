@@ -42,8 +42,8 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public StandardTrackingWheelLocalizer(HardwareMap hardwareMap) {
         super(Arrays.asList(
                 new Pose2d(0, LATERAL_DISTANCE / 2, 0), // left
-                new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right
-                new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front
+                new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right, TYLER: my guess for later today is that i will just have to manually set these in the xy plane where x = 0 at the left encoder
+                new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front, TYLER: maybe modify y too based on its distance from the vertical center of the robot (y = 0)
         ));
 
         leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "backRight"));
