@@ -31,26 +31,29 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double WHEEL_RADIUS = 0.6889764; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = 9.25; // in; distance between the left and right wheels, FIX THIS TYLER
+    public static double LATERAL_DISTANCE = 9.1; // in; distance between the left and right wheels, FIX THIS TYLER
     public static double FORWARD_OFFSET = 0.5; // in; offset of the lateral wheel
 
-    public static double X_MULTIPLIER = 1; // Multiplier in the X direction
+    public static double X_MULTIPLIER = 1.0168018844465; // Multiplier in the X direction
     public static double Y_MULTIPLIER = 1; // Multiplier in the Y direction
 
-    private Encoder leftEncoder, rightEncoder, frontEncoder;
+    private Encoder leftEncoder, rightEncoder, frontEncoder; // 90.31504768093954, 87.02473844098498,  88.26079586413196
+    // 0.996511681175738 + 1.034188687174655 + 1.019705284989106
+    //
 
     public StandardTrackingWheelLocalizer(HardwareMap hardwareMap) {
         super(Arrays.asList(
-                new Pose2d(0, LATERAL_DISTANCE / 2, 0), // left
+                new Pose2d(1.25, LATERAL_DISTANCE / 2, 0), // left
                 new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right, TYLER: my guess for later today is that i will just have to manually set these in the xy plane where x = 0 at the left encoder
-                new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front, TYLER: maybe modify y too based on its distance from the vertical center of the robot (y = 0)
+                new Pose2d(FORWARD_OFFSET, -2, Math.toRadians(90)) // front, TYLER: maybe modify y too based on its distance from the vertical center of the robot (y = 0)
         ));
 
         leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "backRight"));
         rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "backLeft"));
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontRight"));
 
-        rightEncoder.setDirection(Encoder.Direction.REVERSE);
+        leftEncoder.setDirection(Encoder.Direction.REVERSE);
+        frontEncoder.setDirection(Encoder.Direction.REVERSE);
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
     }
 

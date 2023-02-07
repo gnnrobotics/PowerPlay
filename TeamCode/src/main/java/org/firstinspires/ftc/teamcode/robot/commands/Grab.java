@@ -6,7 +6,6 @@ import org.firstinspires.ftc.teamcode.robot.subsystems.ClawSubsystem;
 
 
 public class Grab extends CommandBase {
-
     // The subsystem the command runs on
     private final ClawSubsystem m_ClawSubsystem;
 
@@ -19,7 +18,6 @@ public class Grab extends CommandBase {
     public void initialize() {
         m_ClawSubsystem.grab();
     }
-
     @Override
     public boolean isFinished() {
         return true;

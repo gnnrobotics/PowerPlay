@@ -30,10 +30,6 @@ public class liftPIDCommand extends CommandBase {
     private DoubleSupplier p, i, d, mg;
     private DoubleSupplier target;
     private PIDController controller;
-// top 4000
-    // mid 2850
-    // bottom 1650
-    // ground 150
 
     public liftPIDCommand(LiftSubsystem subsystem, DoubleSupplier targetPosition) {
         m_LiftSubsystem = subsystem;
