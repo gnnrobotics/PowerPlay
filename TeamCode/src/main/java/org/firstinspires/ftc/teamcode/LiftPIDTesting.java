@@ -35,6 +35,7 @@ public class LiftPIDTesting extends CommandOpMode {
     private Grab m_grabCommand;
     private Release m_releaseCommand;
 
+    public static double p = 0, i = 0, d = 0, mg = 0;
     public static double target = 200;
     private ClawSubsystem m_claw;
 
@@ -47,7 +48,7 @@ public class LiftPIDTesting extends CommandOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         m_lift = new LiftSubsystem(hardwareMap, "Lift");
         m_claw = new ClawSubsystem(hardwareMap);
-        m_liftPID = new liftPIDCommand(m_lift, () -> target);
+        m_liftPID = new liftPIDCommand(m_lift, () -> target, () -> p, () -> i, () -> d, () -> mg);
 
         m_claw = new ClawSubsystem(hardwareMap);
         m_grabCommand = new Grab(m_claw);
@@ -61,7 +62,6 @@ public class LiftPIDTesting extends CommandOpMode {
         m_lift.setDefaultCommand(m_liftPID);
     }
     public void run() {
-        //vroom vroom
         super.run();
         telemetry.addData("pos", m_lift.getEncoder());
         telemetry.addData("target", target);

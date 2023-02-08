@@ -18,7 +18,6 @@ public class LiftSubsystem extends SubsystemBase {
 
 
     private final DcMotorEx liftMotor;
-    private final componentConstants.Level Level;
 
 
     public LiftSubsystem(final HardwareMap hMap, final String name) {
@@ -26,8 +25,6 @@ public class LiftSubsystem extends SubsystemBase {
         liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        Level = componentConstants.Level.HIGH;
     }
     // abstraction for setting lift height
     public void setSpecificHeight(double liftSpeed) // set up command where you can eventually just specify down, low, medium, and high and have it go there
@@ -42,8 +39,9 @@ public class LiftSubsystem extends SubsystemBase {
         return liftMotor.getPower();
     }
     public componentConstants.Level getLevel() {
-        return Level;
+        return componentConstants.currentLevel;
     }
-
-
+    public void setLevel(componentConstants.Level newLevel) {
+        componentConstants.currentLevel = newLevel;
+    }
 }

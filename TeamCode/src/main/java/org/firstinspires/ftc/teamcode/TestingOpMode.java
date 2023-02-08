@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SelectCommand;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -12,8 +14,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.robot.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.robot.commands.FineDriveCommand;
+import org.firstinspires.ftc.teamcode.robot.commands.liftPIDCommand;
 import org.firstinspires.ftc.teamcode.robot.commands.setSpecificHeight;
 import org.firstinspires.ftc.teamcode.robot.commands.spinSusan;
+import org.firstinspires.ftc.teamcode.robot.commands.susanPIDCommand;
+import org.firstinspires.ftc.teamcode.robot.componentConstants;
 import org.firstinspires.ftc.teamcode.robot.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.robot.commands.Grab;
 import org.firstinspires.ftc.teamcode.robot.commands.Release;
@@ -26,7 +31,7 @@ import org.firstinspires.ftc.teamcode.robot.subsystems.SusanSubsystem;
 public class TestingOpMode extends CommandOpMode {
 
     private GamepadEx m_driverOp;
-    public RunCommand LIFT_FLOOR, LIFT_LOW, LIFT_MED, LIFT_HIGH;
+    private GamepadEx m_coOp;
 
     private DriveSubsystem m_drive;
     private DriveCommand m_driveCommand;
@@ -37,8 +42,9 @@ public class TestingOpMode extends CommandOpMode {
     private Release m_releaseCommand;
 
     private LiftSubsystem m_lift;
+    private SequentialCommandGroup m_manualANDPid;
     private setSpecificHeight m_heightCommand;
-    private GamepadEx m_coOp;
+    private liftPIDCommand m_levelCommand;
 
     private SusanSubsystem m_susan;
     private spinSusan m_spinCommand;
@@ -60,28 +66,28 @@ public class TestingOpMode extends CommandOpMode {
         m_releaseCommand = new Release(m_claw);
 
         m_lift = new LiftSubsystem(hardwareMap, "Lift");
-        m_heightCommand = new setSpecificHeight(m_lift, () -> m_driverOp.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), () -> m_driverOp.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER));
+        m_manualANDPid = new SequentialCommandGroup(new setSpecificHeight(m_lift, () -> m_driverOp.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), () -> m_driverOp.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)), new liftPIDCommand(m_lift, () -> m_coOp.getButton(GamepadKeys.Button.A)));
 
-        gPad1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(new InstantCommand(() -> liftCommand.setLiftLevels(LiftCommand.LiftLevels.FLOOR)));
-        gPad1.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(new InstantCommand(() -> liftCommand.setLiftLevels(LiftCommand.LiftLevels.LOW)));
-        gPad1.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(new InstantCommand(() -> liftCommand.setLiftLevels(LiftCommand.LiftLevels.MED)));
-        gPad1.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(new InstantCommand(() -> liftCommand.setLiftLevels(LiftCommand.LiftLevels.HIGH)));
-
-        /*m_heightSelectCommand = new SelectCommand(
-                // the first parameter is a map of commands
-                new HashMap<Object, Command>() {{
-                    put(Height.ZERO, new new PurePursuitCommand(...)));
-                    put(Height.ONE, new PurePursuitCommand(...)));
-                    put(Height.FOUR, new PurePursuitCommand(...)));
-                }},
-                // the selector
-                this::height
-        );*/
+        m_coOp.getGamepadButton(GamepadKeys.Button.X).whenPressed(new InstantCommand(() -> {
+            m_lift.setLevel(componentConstants.Level.DOWN);
+        }));
+        m_coOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(new InstantCommand(() -> {
+            m_lift.setLevel(componentConstants.Level.GROUND_J);
+        }));
+        m_coOp.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(new InstantCommand(() -> {
+            m_lift.setLevel(componentConstants.Level.LOW);
+        }));
+        m_coOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(new InstantCommand(() -> {
+            m_lift.setLevel(componentConstants.Level.MEDIUM);
+        }));
+        m_coOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(new InstantCommand(() -> {
+            m_lift.setLevel(componentConstants.Level.HIGH);
+        }));
 
 
         m_susan = new SusanSubsystem(hardwareMap, "Susan");
         m_spinCommand = new spinSusan(m_susan, () -> m_driverOp.getButton(GamepadKeys.Button.LEFT_BUMPER), () -> m_driverOp.getButton(GamepadKeys.Button.RIGHT_BUMPER));
-        m_fineDriveButton = new GamepadButton(m_driverOp, GamepadKeys.Button.LEFT_STICK_BUTTON).whenHeld(m_fineDriveCommand);
+        m_fineDriveButton = new GamepadButton(m_coOp, GamepadKeys.Button.B).whenHeld(m_fineDriveCommand);
         m_toggleButton = new GamepadButton(m_driverOp, GamepadKeys.Button.A).toggleWhenPressed(m_grabCommand, m_releaseCommand);
 
         register(m_drive);
@@ -90,7 +96,7 @@ public class TestingOpMode extends CommandOpMode {
         register(m_susan);
 
         m_drive.setDefaultCommand(m_driveCommand);
-        m_lift.setDefaultCommand(m_heightCommand);
+        m_lift.setDefaultCommand(m_manualANDPid);
         m_susan.setDefaultCommand(m_spinCommand);
     }
     public void run() {
@@ -100,6 +106,9 @@ public class TestingOpMode extends CommandOpMode {
         telemetry.addData("fR", m_drive.getFR());
         telemetry.addData("bL", m_drive.getBL());
         telemetry.addData("bR",m_drive.getBR());
+        telemetry.addData("pos", m_lift.getEncoder());
+        telemetry.addData("power", m_lift.getPower());
+        telemetry.addData("level", componentConstants.currentLevel);
         telemetry.update();
     }
 }

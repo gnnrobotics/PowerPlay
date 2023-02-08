@@ -6,13 +6,14 @@ public class componentConstants { // use 3123's code
 
     // Drive constant
 
+    public static final double normalMotor = 0.8;
     public static final double fineMotor = 0.2;
 
     // Servo constants
     public static final double leftOpen = 0.25;
     public static final double leftClosed = 0;
-    public static final double rightOpen = 0.4;
-    public static final double rightClosed = 0.85;
+    public static final double rightOpen = 0.65;
+    public static final double rightClosed = 0.90;
 
     // Lift constants
     public static final double liftSpeed = 0.5;
@@ -21,6 +22,7 @@ public class componentConstants { // use 3123's code
     public static final DoubleSupplier lowLevel = () -> 1650;
     public static final DoubleSupplier mediumLevel = () -> 2850;
     public static final DoubleSupplier highLevel = () -> 4000;
+
     public enum Level {
         DOWN,
         GROUND_J,
@@ -28,6 +30,8 @@ public class componentConstants { // use 3123's code
         MEDIUM,
         HIGH
     }
+
+    public static Level currentLevel = Level.DOWN;
 
     // Susan constant
     public static final double susanSpeed = 0.35;

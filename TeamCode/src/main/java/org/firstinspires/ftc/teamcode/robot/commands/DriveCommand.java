@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot.commands;
 
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.normalMotor;
+
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.robot.subsystems.DriveSubsystem;
@@ -40,7 +42,7 @@ public class DriveCommand extends CommandBase {
         double backRightPower = (forwardSpeed + strafeSpeed - turnSpeed) / denominator;
 
 
-        m_DriveSubsystem.drivePower(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
+        m_DriveSubsystem.drivePower(frontLeftPower*normalMotor, frontRightPower*normalMotor, backLeftPower*normalMotor, backRightPower*normalMotor);
     }
 
 }

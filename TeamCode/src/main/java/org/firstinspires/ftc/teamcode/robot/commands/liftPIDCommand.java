@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.robot.commands;
 
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.Level.DOWN;
 import static org.firstinspires.ftc.teamcode.robot.componentConstants.downLevel;
 import static org.firstinspires.ftc.teamcode.robot.componentConstants.groundJLevel;
 import static org.firstinspires.ftc.teamcode.robot.componentConstants.highLevel;
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.liftSpeed;
 import static org.firstinspires.ftc.teamcode.robot.componentConstants.lowLevel;
 import static org.firstinspires.ftc.teamcode.robot.componentConstants.mediumLevel;
 
@@ -19,6 +21,7 @@ import org.firstinspires.ftc.teamcode.robot.componentConstants;
 import org.firstinspires.ftc.teamcode.robot.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.robot.subsystems.LiftSubsystem;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 public class liftPIDCommand extends CommandBase {
@@ -30,10 +33,11 @@ public class liftPIDCommand extends CommandBase {
     private DoubleSupplier p, i, d, mg;
     private DoubleSupplier target;
     private PIDController controller;
+    private BooleanSupplier togglePID;
 
     public liftPIDCommand(LiftSubsystem subsystem, DoubleSupplier targetPosition) {
         m_LiftSubsystem = subsystem;
-
+        togglePID = () -> true;
         target = targetPosition;
 
         p = () -> 0.05;
@@ -43,10 +47,11 @@ public class liftPIDCommand extends CommandBase {
 
         addRequirements(m_LiftSubsystem);
     }
-    public liftPIDCommand(LiftSubsystem subsystem, componentConstants.Level level) {
+    public liftPIDCommand(LiftSubsystem subsystem, BooleanSupplier onOrOff) {
         m_LiftSubsystem = subsystem;
+        togglePID = onOrOff;
 
-        DoubleSupplier target = () -> 0;
+        componentConstants.Level level = componentConstants.currentLevel;
 
         switch(level) {
             case DOWN:
@@ -75,7 +80,7 @@ public class liftPIDCommand extends CommandBase {
     }
     public liftPIDCommand(LiftSubsystem subsystem, DoubleSupplier targetPosition, DoubleSupplier pInput, DoubleSupplier iInput, DoubleSupplier dInput, DoubleSupplier mgInput) {
         m_LiftSubsystem = subsystem;
-
+        togglePID = () -> true;
         target = targetPosition;
 
         p = pInput;
@@ -93,13 +98,16 @@ public class liftPIDCommand extends CommandBase {
 
     public void execute()
     {
-        controller.setPID(p.getAsDouble(), i.getAsDouble(), d.getAsDouble());
-        double liftPosition = m_LiftSubsystem.getEncoder();
-        double currentTarget = target.getAsDouble();
-        double pid = controller.calculate(liftPosition, currentTarget);
+        if(togglePID.getAsBoolean())
+        {
+            controller.setPID(p.getAsDouble(), i.getAsDouble(), d.getAsDouble());
+            double liftPosition = m_LiftSubsystem.getEncoder();
+            double currentTarget = target.getAsDouble();
+            double pid = controller.calculate(liftPosition, currentTarget);
 
-        double power = pid + mg.getAsDouble();
+            double power = pid + mg.getAsDouble();
 
-        m_LiftSubsystem.setSpecificHeight(power);
+            m_LiftSubsystem.setSpecificHeight(power);
+        }
     }
 }
