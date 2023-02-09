@@ -7,7 +7,7 @@ public class componentConstants { // use 3123's code
     // Drive constant
 
     public static final double normalMotor = 0.8;
-    public static final double fineMotor = 0.2;
+    public static final double fineMotor = 0.1;
 
     // Servo constants
     public static final double leftOpen = 0.25;
