@@ -38,11 +38,10 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  *
  * Uncomment the @Disabled tag below to use this opmode.
  */
-@Disabled
 @Config
 @TeleOp(group = "drive")
 public class MotorDirectionDebugger extends LinearOpMode {
-    public static double MOTOR_POWER = 0.7;
+    public static double MOTOR_POWER = 0.1;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -69,7 +68,7 @@ public class MotorDirectionDebugger extends LinearOpMode {
             telemetry.addLine("<font face=\"monospace\">&nbsp;&nbsp;B / O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Rear&nbsp;&nbsp;Right</font>");
             telemetry.addLine("<font face=\"monospace\">&nbsp;&nbsp;A / X&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Rear&nbsp;&nbsp;Left</font>");
             telemetry.addLine();
-
+            // BL - 9.75, FL - 9.75, BR - 20, FR - 20
             if(gamepad1.x) {
                 drive.setMotorPowers(MOTOR_POWER, 0, 0, 0);
                 telemetry.addLine("Running Motor: Front Left");
