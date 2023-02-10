@@ -53,21 +53,26 @@ import java.util.List;
  */
 @Config
 public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive {
-    private static final TrajectoryVelocityConstraint     VEL_CONSTRAINT     = getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH);
-    private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT   = getAccelerationConstraint(MAX_ACCEL);
-    public static        PIDCoefficients                  TRANSLATIONAL_PID  = new PIDCoefficients(0, 0, 0);
-    public static        PIDCoefficients                  HEADING_PID        = new PIDCoefficients(0, 0, 0);
-    public static        double                           LATERAL_MULTIPLIER = 1;
-    public static        double                           VX_WEIGHT          = 1;
-    public static        double                           VY_WEIGHT          = 1;
-    public static        double                           OMEGA_WEIGHT       = 1;
-    private              TrajectorySequenceRunner         trajectorySequenceRunner;
-    private              TrajectoryFollower               follower;
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+
+    public static double LATERAL_MULTIPLIER = 1.20569008;
+
+    public static double VX_WEIGHT = 1;
+    public static double VY_WEIGHT = 1;
+    public static double OMEGA_WEIGHT = 1;
+
+    private TrajectorySequenceRunner trajectorySequenceRunner;
+
+    private static final TrajectoryVelocityConstraint VEL_CONSTRAINT = getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH);
+    private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
+
+    private TrajectoryFollower follower;
 
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private List<DcMotorEx> motors;
 
-    private IMU           imu;
+    private IMU imu;
     private VoltageSensor batteryVoltageSensor;
 
     public MecanumDrive(HardwareMap hardwareMap) {
@@ -89,14 +94,14 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
         // TODO: Adjust the orientations here to match your robot. See the FTC SDK documentation for
         // details
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
 
-        leftFront  = hardwareMap.get(DcMotorEx.class, "fL");
-        leftRear   = hardwareMap.get(DcMotorEx.class, "bL");
-        rightRear  = hardwareMap.get(DcMotorEx.class, "bR");
-        rightFront = hardwareMap.get(DcMotorEx.class, "fR");
+        leftFront  = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        leftRear   = hardwareMap.get(DcMotorEx.class, "backLeft");
+        rightRear  = hardwareMap.get(DcMotorEx.class, "backRight");
+        rightFront = hardwareMap.get(DcMotorEx.class, "frontRight");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 

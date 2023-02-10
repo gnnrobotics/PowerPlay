@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.robot.componentConstants;
 
+import java.util.function.DoubleSupplier;
+
 /**
  * A gripper mechanism that grabs a stone from the quarry.
  * Centered around the Skystone game for FTC that was done in the 2020
@@ -43,5 +45,11 @@ public class LiftSubsystem extends SubsystemBase {
     }
     public void setLevel(componentConstants.Level newLevel) {
         componentConstants.currentLevel = newLevel;
+    }
+    public DoubleSupplier getTarget() {
+        return componentConstants.currentTarget;
+    }
+    public void setTarget(DoubleSupplier newTarget) {
+        componentConstants.currentTarget = newTarget;
     }
 }

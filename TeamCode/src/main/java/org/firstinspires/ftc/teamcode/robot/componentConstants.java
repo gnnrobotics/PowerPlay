@@ -22,6 +22,7 @@ public class componentConstants { // use 3123's code
     public static final DoubleSupplier lowLevel = () -> 1650;
     public static final DoubleSupplier mediumLevel = () -> 2850;
     public static final DoubleSupplier highLevel = () -> 4000;
+    public static DoubleSupplier currentTarget = downLevel;
 
     public enum Level {
         DOWN,
