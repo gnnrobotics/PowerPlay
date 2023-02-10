@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode.drive;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-
+// -55.852182892753554 but 46.5 -> (1.20112221 + 1.20153306 + 1.21441498) / 3
+// -55.87128743887269 but 46 -> 1.20153306
+// -55.86308901905444 but 46 -> 1.21441498
+// 1.20569008
 /*
  * Constants shared between multiple drive types.
  *
@@ -18,7 +21,10 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
  */
 @Config
 public class DriveConstants { // 13.07 volts turned really turned at 12.79 V, kF 12.668084091945405
-
+// 61.5 reported 61.102497305820684 - 1.00650551 1.00534513 1.00570661
+    // 61.5 reported 61.17302241861404 -
+    // 61.5 reported 61.151035189845125 -
+    // 0.9984313
     /*
      * These are motor constants that should be listed online for your motors.
      */
@@ -34,7 +40,7 @@ public class DriveConstants { // 13.07 volts turned really turned at 12.79 V, kF
      * from DriveVelocityPIDTuner.
      */
     public static final boolean RUN_USING_ENCODER = true;
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(16, 0, 7,
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(20, 0, 5,
             13);
 
     /*
@@ -46,7 +52,7 @@ public class DriveConstants { // 13.07 volts turned really turned at 12.79 V, kF
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
     public static double WHEEL_RADIUS = 1.88976; // in
-    public static double GEAR_RATIO = 0.99262206088127; // output (wheel) speed / input (motor) speed
+    public static double GEAR_RATIO = 1.00907761; // output (wheel) speed / input (motor) speed
     public static double TRACK_WIDTH = 16.5; // in
 
     /*

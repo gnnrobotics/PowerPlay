@@ -26,9 +26,9 @@ import org.firstinspires.ftc.teamcode.robot.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.robot.subsystems.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.robot.subsystems.SusanSubsystem;
 
-@TeleOp(name = "FINAL_TELEOP")
+@TeleOp(name = "FINAL_TELEOP") // ALWAYS RUN AUTO AT 12.53 or above
 
-public class TestingOpMode extends CommandOpMode {
+public class TestingOpMode extends CommandOpMode { // remember guy on discord who gave u his liftsubsystem, also 1 and 3 were swapped
 
     private GamepadEx m_driverOp;
     private GamepadEx m_coOp;
@@ -106,6 +106,12 @@ public class TestingOpMode extends CommandOpMode {
         telemetry.addData("fR", m_drive.getFR());
         telemetry.addData("bL", m_drive.getBL());
         telemetry.addData("bR",m_drive.getBR());
+
+        telemetry.addData("fLE", m_drive.getFLEncoder());
+        telemetry.addData("fRE", m_drive.getFREncoder());
+        telemetry.addData("bLE", m_drive.getBLEncoder());
+        telemetry.addData("bRE",m_drive.getBREncoder());
+
         telemetry.addData("pos", m_lift.getEncoder());
         telemetry.addData("power", m_lift.getPower());
         telemetry.addData("level", componentConstants.currentLevel);

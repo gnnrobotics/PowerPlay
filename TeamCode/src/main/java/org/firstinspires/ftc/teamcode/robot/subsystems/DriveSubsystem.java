@@ -43,4 +43,18 @@ public class DriveSubsystem extends SubsystemBase {
     public double getBR(){
         return m_backRight.getPower();
     }
+
+    public double getFLEncoder(){
+        return m_frontLeft.getCurrentPosition();
+    }
+    public double getFREncoder(){
+        return m_frontRight.getCurrentPosition();
+    }
+    public double getBLEncoder(){
+        return m_backLeft.getCurrentPosition();
+    }
+    public double getBREncoder(){
+        return m_backRight.getCurrentPosition();
+    }
+
 }
