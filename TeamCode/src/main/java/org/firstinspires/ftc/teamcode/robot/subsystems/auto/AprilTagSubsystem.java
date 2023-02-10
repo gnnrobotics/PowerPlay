@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.robot.commands.auto.TrajectoryFollowerCommand;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -93,7 +95,7 @@ public class AprilTagSubsystem extends SubsystemBase {
 			for (AprilTagDetection tag : currentDetections) {
 				if (tag.id >= 1 && tag.id <= 3) {
 					tagOfInterest = tag;
-					tagFound      = true;
+					tagFound = true;
 					break;
 				}
 			}

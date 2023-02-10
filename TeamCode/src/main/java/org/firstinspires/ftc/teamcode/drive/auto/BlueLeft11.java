@@ -16,6 +16,7 @@ import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.commands.Grab;
 import org.firstinspires.ftc.teamcode.robot.commands.Release;
 import org.firstinspires.ftc.teamcode.robot.commands.auto.TrajectoryFollowerCommand;
@@ -38,7 +39,7 @@ public class BlueLeft11 extends CommandOpMode {
     private TrajectoryFollowerCommand m_initialMovingCommand;
     private SequentialCommandGroup chainingTrajectories;
     private SelectCommand m_signalPark;
-    private Pose2d startPose = new Pose2d(-36.00, 61.13, Math.toRadians(-90.00));
+    private Pose2d startPose = new Pose2d(36.224, 63, Math.toRadians(-90.00));
 
     private ClawSubsystem m_claw;;
     private Grab m_grabCommand;
@@ -57,35 +58,42 @@ public class BlueLeft11 extends CommandOpMode {
     @Override
     public void initialize() {
 
-        TrajectorySequence stackingCones = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(-27.80, 4.02))
-                .build();
-
-        TrajectorySequence goToPickUpCone = drive.trajectorySequenceBuilder(stackingCones.end())
-                .lineTo(new Vector2d(-65.30, 12.28))
-                .build();
-
-
-        TrajectorySequence goToDropOffCone = drive.trajectorySequenceBuilder(goToPickUpCone.end())
-                .lineTo(new Vector2d(-27.80, 4.02))
-                .build();
-
-        TrajectorySequence parkRight = drive.trajectorySequenceBuilder(goToDropOffCone.end())
-                .splineToSplineHeading(new Pose2d(-62.12, 23.94, Math.toRadians(90.00)), Math.toRadians(90.00))
-                .build();
-        TrajectorySequence parkCenter = drive.trajectorySequenceBuilder(goToDropOffCone.end())
-                .lineTo(new Vector2d(-35.50, 24.28))
-                .build();
-        TrajectorySequence parkLeft = drive.trajectorySequenceBuilder(goToDropOffCone.end())
-                .lineTo(new Vector2d(-11.72, 24.45))
-                .build();
-
         m_aprilTag = new AprilTagSubsystem(hardwareMap, "Webcam 1", 1280, 720, 0.4, 1552.74274588, 1552.74274588, 793.573231003, 202.006088244);
         DETECTOR_WAIT = new WaitUntilCommand(m_aprilTag::foundZone);
         m_aprilTag.init();
 
-        drive = new MecanumSubsystem(new MecanumDrive(hardwareMap), true); // if i run into issues switch boolean
+        drive = new MecanumSubsystem(new SampleMecanumDrive(hardwareMap), true); // if i run into issues switch boolean
+
+        TrajectorySequence stackingCones = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(new Vector2d(35.06, 6.38))
+                .build();
+
+        // .lineToConstantHeading(new Vector2d(29.63, -0.56))
+        //                .splineTo(new Vector2d(42.94, 11.06), Math.toRadians(32.16))
+        //                .splineTo(new Vector2d(63.94, 13.31), Math.toRadians(25.18))
+
         m_initialMovingCommand = new TrajectoryFollowerCommand(drive, stackingCones);
+
+        TrajectorySequence goToPickUpCone = drive.trajectorySequenceBuilder(stackingCones.end())
+                .lineTo(new Vector2d(65.30, 12.28))
+                .build();
+
+        TrajectorySequence goToDropOffCone = drive.trajectorySequenceBuilder(goToPickUpCone.end())
+                .lineTo(new Vector2d(27.80, 4.02))
+                .build();
+
+        TrajectorySequence parkRight = drive.trajectorySequenceBuilder(goToDropOffCone.end())
+                .lineTo(new Vector2d(11.81, 61.50))
+                .lineTo(new Vector2d(13.50, 24.94))
+                .build();
+        TrajectorySequence parkCenter = drive.trajectorySequenceBuilder(goToDropOffCone.end())
+                .lineTo(new Vector2d(36.19, 24.56))
+                .build();
+        TrajectorySequence parkLeft = drive.trajectorySequenceBuilder(goToDropOffCone.end())
+                .lineTo(new Vector2d(58, 63))
+                .lineTo(new Vector2d(58, 36))
+                .build();
+
         m_signalPark = new SelectCommand(
                 new HashMap<Object, Command>() {{
                     put(AprilTagSubsystem.ParkingZone.LEFT, new TrajectoryFollowerCommand(drive, parkLeft));
@@ -108,14 +116,14 @@ public class BlueLeft11 extends CommandOpMode {
         m_susanCommand = new susanPIDCommand(m_susan, m_susan.getTarget());
 
         chainingTrajectories = new SequentialCommandGroup(
-                m_grabCommand, // initially grab cone
+                new InstantCommand(m_claw::grab), // initially grab cone
                 new ParallelCommandGroup( // offload cone
                     new TrajectoryFollowerCommand(drive, stackingCones),
                     new SequentialCommandGroup(
                             new WaitCommand(5000),
                             // new InstantCommand(() -> m_susan.setTarget(some value))
                             new InstantCommand(() -> m_lift.setTarget(highLevel)),
-                            m_releaseCommand
+                            new InstantCommand(m_claw::release)
                     )
                 ),
                 new ParallelCommandGroup( // go get another cone
@@ -126,7 +134,7 @@ public class BlueLeft11 extends CommandOpMode {
                             new InstantCommand(() -> m_lift.setTarget(downLevel)) // lower lift
                     )
                 ),
-                m_grabCommand, // grab new cone
+                new InstantCommand(m_claw::grab), // grab new cone
                 new ParallelCommandGroup( // go drop off cone
                         new TrajectoryFollowerCommand(drive, goToDropOffCone),
                         new SequentialCommandGroup(
@@ -134,7 +142,7 @@ public class BlueLeft11 extends CommandOpMode {
                                 // new InstantCommand(() -> m_susan.setTarget(some value))
                                 new InstantCommand(() -> m_lift.setTarget(highLevel))
                         ),
-                        m_releaseCommand // release cone
+                        new InstantCommand(m_claw::release) // release cone
                 ),
                 m_signalPark // park
         );
@@ -149,7 +157,7 @@ public class BlueLeft11 extends CommandOpMode {
         m_lift.setDefaultCommand(m_levelCommand);
         m_susan.setDefaultCommand(m_susanCommand);
 
-        schedule(chainingTrajectories);
+        schedule(new WaitUntilCommand(this::isStarted).andThen(new TrajectoryFollowerCommand(drive, stackingCones)));
 
         if (isStopRequested()) return;
     }

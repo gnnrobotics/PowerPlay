@@ -53,7 +53,7 @@ public class DriveConstants { // 13.07 volts turned really turned at 12.79 V, kF
      */
     public static double WHEEL_RADIUS = 1.88976; // in
     public static double GEAR_RATIO = 1.00907761; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 16.5; // in
+    public static double TRACK_WIDTH = 16.25; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -95,10 +95,10 @@ public class DriveConstants { // 13.07 volts turned really turned at 12.79 V, kF
 * 62.222885379183666 said 62.5
 * 62.39038430213039 said 63
      */
-    public static double MAX_VEL = 40;
-    public static double MAX_ACCEL = 40;
-    public static double MAX_ANG_VEL = Math.toRadians(184.02607784577722);
-    public static double MAX_ANG_ACCEL = Math.toRadians(184.02607784577722);
+    public static double MAX_VEL = 30;
+    public static double MAX_ACCEL = 30;
+    public static double MAX_ANG_VEL = Math.toRadians(134.55001655079957);
+    public static double MAX_ANG_ACCEL = Math.toRadians(134.55001655079957);
 
 
     public static double encoderTicksToInches(double ticks) {

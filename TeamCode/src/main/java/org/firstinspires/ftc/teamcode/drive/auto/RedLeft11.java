@@ -16,6 +16,7 @@ import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.commands.Grab;
 import org.firstinspires.ftc.teamcode.robot.commands.Release;
 import org.firstinspires.ftc.teamcode.robot.commands.auto.TrajectoryFollowerCommand;
@@ -84,7 +85,7 @@ public class RedLeft11 extends CommandOpMode {
         DETECTOR_WAIT = new WaitUntilCommand(m_aprilTag::foundZone);
         m_aprilTag.init();
 
-        drive = new MecanumSubsystem(new MecanumDrive(hardwareMap), true); // if i run into issues switch boolean
+        drive = new MecanumSubsystem(new SampleMecanumDrive(hardwareMap), true); // if i run into issues switch boolean
         m_initialMovingCommand = new TrajectoryFollowerCommand(drive, stackingCones);
         m_signalPark = new SelectCommand(
                 new HashMap<Object, Command>() {{

@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 
@@ -23,10 +24,10 @@ import java.util.List;
 
 public class MecanumSubsystem extends SubsystemBase {
 
-	private final MecanumDrive drive;
+	private final SampleMecanumDrive drive;
 	private final boolean      fieldCentric;
 
-	public MecanumSubsystem(MecanumDrive drive, boolean isFieldCentric) {
+	public MecanumSubsystem(SampleMecanumDrive drive, boolean isFieldCentric) {
 		this.drive   = drive;
 		fieldCentric = isFieldCentric;
 	}
