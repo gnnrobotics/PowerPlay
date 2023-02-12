@@ -10,13 +10,13 @@ public class componentConstants { // use 3123's code
     public static final double fineMotor = 0.1;
 
     // Servo constants
-    public static final double leftOpen = 0.25;
-    public static final double leftClosed = 0;
-    public static final double rightOpen = 0.65;
-    public static final double rightClosed = 0.90;
+    public static final double leftClosed = 0.29;
+    public static final double leftOpen = 0.05;
+    public static final double rightClosed = 0.61;
+    public static final double rightOpen = 0.85;
 
     // Lift constants
-    public static final double liftSpeed = 0.5;
+    public static final double liftSpeed = 0.75;
     public static final DoubleSupplier downLevel = () -> 0;
     public static final DoubleSupplier groundJLevel = () -> 150;
     public static final DoubleSupplier lowLevel = () -> 1650;

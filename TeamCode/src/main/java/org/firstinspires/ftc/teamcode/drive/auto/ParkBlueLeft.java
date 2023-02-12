@@ -84,6 +84,7 @@ public class ParkBlueLeft extends CommandOpMode {
         );
 
         register(drive);
+        register(m_claw);
         register(m_aprilTag);
 
         schedule(new ParallelCommandGroup(m_grabCommand, new WaitUntilCommand(this::isStarted).andThen(m_signalPark)));
