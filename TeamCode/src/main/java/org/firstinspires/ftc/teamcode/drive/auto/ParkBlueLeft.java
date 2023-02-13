@@ -40,7 +40,7 @@ public class ParkBlueLeft extends CommandOpMode {
 
     private MecanumSubsystem drive;
     private SelectCommand m_signalPark;
-    private Pose2d startPose = new Pose2d(36.224, 63, Math.toRadians(-90.00));
+    private Pose2d startPose = new Pose2d(36.224, 65, Math.toRadians(-90.00));
 
     private ClawSubsystem m_claw;;
     private Grab m_grabCommand;
@@ -64,7 +64,7 @@ public class ParkBlueLeft extends CommandOpMode {
                 .lineTo(new Vector2d(58, 63))
                 .build();
         TrajectorySequence getStackCone = drive.trajectorySequenceBuilder(terminalCone.end())
-                .splineTo(new Vector2d(60.39, 24.25), Math.toRadians(270.00))
+                .splineTo(new Vector2d(60, 24.25), Math.toRadians(270.00))
                 .build();
 
         TrajectorySequence parkRight = drive.trajectorySequenceBuilder(startPose)
