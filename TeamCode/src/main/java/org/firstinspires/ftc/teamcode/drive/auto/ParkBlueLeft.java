@@ -60,6 +60,13 @@ public class ParkBlueLeft extends CommandOpMode {
         DETECTOR_WAIT = new WaitUntilCommand(m_aprilTag::foundZone);
         m_aprilTag.init();
 
+        TrajectorySequence terminalCone = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(new Vector2d(58, 63))
+                .build();
+        TrajectorySequence getStackCone = drive.trajectorySequenceBuilder(terminalCone.end())
+                .splineTo(new Vector2d(58.33, 18.82), Math.toRadians(270.00))
+                .build();
+
         TrajectorySequence parkRight = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(11.81, 61.50))
                 .lineTo(new Vector2d(13.50, 24.94))
@@ -87,7 +94,7 @@ public class ParkBlueLeft extends CommandOpMode {
         register(m_claw);
         register(m_aprilTag);
 
-        schedule(new ParallelCommandGroup(m_grabCommand, new WaitUntilCommand(this::isStarted).andThen(m_signalPark)));
+        schedule(new SequentialCommandGroup(m_grabCommand, new WaitUntilCommand(this::isStarted), new TrajectoryFollowerCommand(drive, terminalCone), new TrajectoryFollowerCommand(drive, getStackCone)));
 
 
         if (isStopRequested()) return;
