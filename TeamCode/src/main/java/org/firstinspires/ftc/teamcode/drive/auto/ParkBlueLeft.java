@@ -64,7 +64,7 @@ public class ParkBlueLeft extends CommandOpMode {
                 .lineTo(new Vector2d(58, 63))
                 .build();
         TrajectorySequence getStackCone = drive.trajectorySequenceBuilder(terminalCone.end())
-                .splineTo(new Vector2d(58.33, 18.82), Math.toRadians(270.00))
+                .splineTo(new Vector2d(60.39, 24.25), Math.toRadians(270.00))
                 .build();
 
         TrajectorySequence parkRight = drive.trajectorySequenceBuilder(startPose)
@@ -94,7 +94,7 @@ public class ParkBlueLeft extends CommandOpMode {
         register(m_claw);
         register(m_aprilTag);
 
-        schedule(new SequentialCommandGroup(m_grabCommand, new WaitUntilCommand(this::isStarted), new TrajectoryFollowerCommand(drive, terminalCone), new TrajectoryFollowerCommand(drive, getStackCone)));
+        schedule(new SequentialCommandGroup(m_grabCommand, new WaitUntilCommand(this::isStarted), new TrajectoryFollowerCommand(drive, terminalCone), new InstantCommand(m_claw::release), new TrajectoryFollowerCommand(drive, getStackCone)));
 
 
         if (isStopRequested()) return;
