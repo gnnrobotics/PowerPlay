@@ -18,7 +18,7 @@ public class susanPIDTesting extends CommandOpMode {
 
     private SusanSubsystem m_susan;
     private susanPIDCommand m_susanPID;
-    public static double p = 0, i = 0, d = 0;
+    public static double p = 0, i = 0, d = 0, maxVelocity = 1.75, maxAcceleration = 0.75;
     public static double target = 50;
 
     @Override
@@ -28,7 +28,7 @@ public class susanPIDTesting extends CommandOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         m_susan = new SusanSubsystem(hardwareMap, "Susan");
 
-        m_susanPID = new susanPIDCommand(m_susan, () -> target, () -> p, () -> i, () -> d);
+        m_susanPID = new susanPIDCommand(m_susan, () -> target, () -> p, () -> i, () -> d, () -> maxVelocity, () -> maxAcceleration);
         register(m_susan);
         System.out.println(target);
         m_susan.setDefaultCommand(m_susanPID);

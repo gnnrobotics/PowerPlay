@@ -8,6 +8,8 @@ import static org.firstinspires.ftc.teamcode.robot.componentConstants.mediumLeve
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.controller.wpilibcontroller.ProfiledPIDController;
+import com.arcrobotics.ftclib.trajectory.TrapezoidProfile;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.robot.componentConstants;
@@ -19,20 +21,22 @@ public class susanPIDCommand extends CommandBase {
 
     private final SusanSubsystem susanSubsystem;
 
-    private DoubleSupplier p, i, d;
+    private DoubleSupplier p, i, d, maxVelocity, maxAcceleration;
     private DoubleSupplier target;
-    private PIDController controller;
+    private ProfiledPIDController controller;
     private componentConstants.Level nowLevel;
 
 
     public susanPIDCommand(SusanSubsystem subsystem, DoubleSupplier targetPosition) {
         susanSubsystem = subsystem;
-
+// 135 ticks = 90 degrees
         target = targetPosition;
 
         p = () -> 0.10;
         i = () -> 0;
-        d = () -> 0.00005;
+        d = () -> 0.00001;
+        maxVelocity = () -> 400;
+        maxAcceleration = () -> 200;
 
         addRequirements(susanSubsystem);
     }
@@ -63,11 +67,13 @@ public class susanPIDCommand extends CommandBase {
 
         p = () -> 0.10;
         i = () -> 0;
-        d = () -> 0.00005;
+        d = () -> 0.00001;
+        maxVelocity = () -> 400;
+        maxAcceleration = () -> 200;
 
         addRequirements(susanSubsystem);
     }
-    public susanPIDCommand(SusanSubsystem subsystem, DoubleSupplier targetPosition, DoubleSupplier pInput, DoubleSupplier iInput, DoubleSupplier dInput) {
+    public susanPIDCommand(SusanSubsystem subsystem, DoubleSupplier targetPosition, DoubleSupplier pInput, DoubleSupplier iInput, DoubleSupplier dInput, DoubleSupplier maxVelInput, DoubleSupplier maxAccelInput) {
         susanSubsystem = subsystem;
 
         target = targetPosition;
@@ -75,13 +81,15 @@ public class susanPIDCommand extends CommandBase {
         p = pInput;
         i = iInput;
         d = dInput;
+        maxVelocity = maxVelInput;
+        maxAcceleration = maxAccelInput;
 
         addRequirements(susanSubsystem);
     }
 
     @Override
     public void initialize() {
-        controller = new PIDController(p.getAsDouble(), i.getAsDouble(), d.getAsDouble());
+        controller = new ProfiledPIDController(p.getAsDouble(), i.getAsDouble(), d.getAsDouble(), new TrapezoidProfile.Constraints(maxVelocity.getAsDouble(), maxAcceleration.getAsDouble()));
     }
 
     public void execute()

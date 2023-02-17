@@ -15,6 +15,8 @@ import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.controller.wpilibcontroller.ProfiledPIDController;
+import com.arcrobotics.ftclib.trajectory.TrapezoidProfile;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.robot.componentConstants;
@@ -30,9 +32,9 @@ public class liftPIDCommand extends CommandBase {
 
     // private final double ticks_in_degree = 537.7/360;
 
-    private DoubleSupplier p, i, d, mg;
+    private DoubleSupplier p, i, d, mg, maxVelocity, maxAcceleration;
     private DoubleSupplier target;
-    private PIDController controller;
+    private ProfiledPIDController controller;
     private BooleanSupplier togglePID;
 
     public liftPIDCommand(LiftSubsystem subsystem, DoubleSupplier targetPosition) {
@@ -43,7 +45,9 @@ public class liftPIDCommand extends CommandBase {
         p = () -> 0.05;
         i = () -> 0;
         d = () -> 0.00045;
-        mg = () -> 0.001;
+        mg = () -> 0.01;
+        maxVelocity = () -> 13000;
+        maxAcceleration = () -> 3600;
 
         addRequirements(m_LiftSubsystem);
     }
@@ -78,7 +82,7 @@ public class liftPIDCommand extends CommandBase {
 
         addRequirements(m_LiftSubsystem);
     }
-    public liftPIDCommand(LiftSubsystem subsystem, DoubleSupplier targetPosition, DoubleSupplier pInput, DoubleSupplier iInput, DoubleSupplier dInput, DoubleSupplier mgInput) {
+    public liftPIDCommand(LiftSubsystem subsystem, DoubleSupplier targetPosition, DoubleSupplier pInput, DoubleSupplier iInput, DoubleSupplier dInput, DoubleSupplier mgInput, DoubleSupplier maxVelInput, DoubleSupplier maxAccelInput) {
         m_LiftSubsystem = subsystem;
         togglePID = () -> true;
         target = targetPosition;
@@ -87,13 +91,15 @@ public class liftPIDCommand extends CommandBase {
         i = iInput;
         d = dInput;
         mg = mgInput;
+        maxVelocity = maxVelInput;
+        maxAcceleration = maxAccelInput;
 
         addRequirements(m_LiftSubsystem);
     }
 
     @Override
     public void initialize() {
-        controller = new PIDController(p.getAsDouble(), i.getAsDouble(), d.getAsDouble());
+        controller = new ProfiledPIDController(p.getAsDouble(), i.getAsDouble(), d.getAsDouble(), new TrapezoidProfile.Constraints(maxVelocity.getAsDouble(), maxAcceleration.getAsDouble()));
     }
 
     public void execute()
