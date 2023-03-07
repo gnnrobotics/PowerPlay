@@ -20,6 +20,8 @@ public class LiftSubsystem extends SubsystemBase {
 
 
     private final DcMotorEx liftMotor;
+    private boolean switchState = false;
+    private boolean initialStateRequest = false;
 
 
     public LiftSubsystem(final HardwareMap hMap, final String name) {
@@ -51,5 +53,18 @@ public class LiftSubsystem extends SubsystemBase {
     }
     public void setTarget(DoubleSupplier newTarget) {
         componentConstants.currentTarget = newTarget;
+    }
+    public void switchState() {
+        switchState = !switchState;
+    }
+    public boolean getSwitchState() {
+        return switchState;
+    }
+
+    public void initialStateRequest() {
+        initialStateRequest = !initialStateRequest;
+    }
+    public boolean getInitialStateRequest() {
+        return initialStateRequest;
     }
 }

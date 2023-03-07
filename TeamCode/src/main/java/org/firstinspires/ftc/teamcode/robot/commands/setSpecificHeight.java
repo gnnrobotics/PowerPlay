@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot.commands;
 
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.endPosition;
 import static org.firstinspires.ftc.teamcode.robot.componentConstants.liftSpeed;
 
 import com.arcrobotics.ftclib.command.CommandBase;
@@ -41,11 +42,5 @@ public class setSpecificHeight extends CommandBase {
             m_LiftSubsystem.setSpecificHeight(0);
         }
     }
-/* use for lift level code   private enum Level {
-        DOWN,
-        LOW,
-        MEDIUM,
-        HIGH
-    } */
 
 }

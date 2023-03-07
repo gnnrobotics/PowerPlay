@@ -24,6 +24,10 @@ public class componentConstants { // use 3123's code
     public static final DoubleSupplier highLevel = () -> 4000;
     public static DoubleSupplier currentTarget = downLevel;
 
+    public static double liftTime = 1;
+
+    public static double endPosition;
+
     public enum Level {
         DOWN,
         GROUND_J,

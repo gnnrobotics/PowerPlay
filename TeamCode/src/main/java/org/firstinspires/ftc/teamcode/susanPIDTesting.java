@@ -30,9 +30,9 @@ public class susanPIDTesting extends CommandOpMode {
 
         m_susanPID = new susanPIDCommand(m_susan, () -> target, () -> p, () -> i, () -> d, () -> maxVelocity, () -> maxAcceleration);
         register(m_susan);
-        System.out.println(target);
         m_susan.setDefaultCommand(m_susanPID);
     }
+
     public void run() {
         super.run();
         telemetry.addData("pos", m_susan.getEncoder());

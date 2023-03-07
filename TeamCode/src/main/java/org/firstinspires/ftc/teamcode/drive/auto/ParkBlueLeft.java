@@ -38,6 +38,7 @@ import java.util.HashMap;
 @Autonomous(name = "BLUE_LEFT_PARKING", group = "PARKING", preselectTeleOp = "FINAL_TELEOP")
 public class ParkBlueLeft extends CommandOpMode {
 // 2900 to 2750
+    // eventually switch to original
     private MecanumSubsystem drive;
 
     private SelectCommand m_signalPark;

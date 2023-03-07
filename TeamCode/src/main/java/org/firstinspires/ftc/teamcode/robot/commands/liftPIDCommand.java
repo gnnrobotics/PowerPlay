@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.robot.commands;
 
 import static org.firstinspires.ftc.teamcode.robot.componentConstants.Level.DOWN;
 import static org.firstinspires.ftc.teamcode.robot.componentConstants.downLevel;
+import static org.firstinspires.ftc.teamcode.robot.componentConstants.endPosition;
 import static org.firstinspires.ftc.teamcode.robot.componentConstants.groundJLevel;
 import static org.firstinspires.ftc.teamcode.robot.componentConstants.highLevel;
 import static org.firstinspires.ftc.teamcode.robot.componentConstants.liftSpeed;
@@ -115,5 +116,9 @@ public class liftPIDCommand extends CommandBase {
 
             m_LiftSubsystem.setSpecificHeight(power);
         }
+    }
+
+    public void end() {
+        endPosition = target.getAsDouble();
     }
 }
