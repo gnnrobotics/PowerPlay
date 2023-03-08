@@ -1,11 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.RunCommand;
-import com.arcrobotics.ftclib.command.SelectCommand;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -15,9 +11,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.robot.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.robot.commands.FineDriveCommand;
 import org.firstinspires.ftc.teamcode.robot.commands.liftPIDCommand;
+import org.firstinspires.ftc.teamcode.robot.commands.liftStateMachine;
 import org.firstinspires.ftc.teamcode.robot.commands.setSpecificHeight;
 import org.firstinspires.ftc.teamcode.robot.commands.spinSusan;
-import org.firstinspires.ftc.teamcode.robot.commands.susanPIDCommand;
 import org.firstinspires.ftc.teamcode.robot.componentConstants;
 import org.firstinspires.ftc.teamcode.robot.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.robot.commands.Grab;
@@ -26,9 +22,9 @@ import org.firstinspires.ftc.teamcode.robot.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.robot.subsystems.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.robot.subsystems.SusanSubsystem;
 
-@TeleOp(name = "NO_PID_TELEOP") // ALWAYS RUN AUTO AT 12.53 or above
+@TeleOp(name = "PID_OP_MODE") // ALWAYS RUN AUTO AT 12.53 or above
 
-public class TestingOpMode extends CommandOpMode { // remember guy on discord who gave u his liftsubsystem, also 1 and 3 were swapped
+public class PIDOpMode extends CommandOpMode { // remember guy on discord who gave u his liftsubsystem, also 1 and 3 were swapped
 
     private GamepadEx m_driverOp;
     private GamepadEx m_coOp;
@@ -37,12 +33,13 @@ public class TestingOpMode extends CommandOpMode { // remember guy on discord wh
     private DriveCommand m_driveCommand;
     Button m_fineDriveButton;
 
-    private ClawSubsystem m_claw;;
+    private ClawSubsystem m_claw;
     private Grab m_grabCommand;
     private Release m_releaseCommand;
 
     private LiftSubsystem m_lift;
-    private SequentialCommandGroup m_manualANDPid;
+    private liftStateMachine m_liftStateMachine;
+
     private setSpecificHeight m_heightCommand;
     private liftPIDCommand m_levelCommand;
 
@@ -66,11 +63,12 @@ public class TestingOpMode extends CommandOpMode { // remember guy on discord wh
         m_releaseCommand = new Release(m_claw);
 
         m_lift = new LiftSubsystem(hardwareMap, "Lift");
-        m_manualANDPid = new SequentialCommandGroup(new setSpecificHeight(m_lift, () -> m_driverOp.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), () -> m_driverOp.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)), new liftPIDCommand(m_lift, () -> m_coOp.getButton(GamepadKeys.Button.A)));
+        m_liftStateMachine = new liftStateMachine(
+                m_lift,
+                () -> m_driverOp.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER),
+                () -> m_driverOp.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)
+        );
 
-        m_coOp.getGamepadButton(GamepadKeys.Button.X).whenPressed(new InstantCommand(() -> {
-            m_lift.setLevel(componentConstants.Level.DOWN);
-        }));
         m_coOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(new InstantCommand(() -> {
             m_lift.setLevel(componentConstants.Level.GROUND_J);
         }));
@@ -82,6 +80,13 @@ public class TestingOpMode extends CommandOpMode { // remember guy on discord wh
         }));
         m_coOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(new InstantCommand(() -> {
             m_lift.setLevel(componentConstants.Level.HIGH);
+        }));
+        m_coOp.getGamepadButton(GamepadKeys.Button.A).whenPressed(new InstantCommand(() -> {
+            m_lift.initialStateRequest();
+        }));
+
+        m_driverOp.getGamepadButton(GamepadKeys.Button.B).whenPressed(new InstantCommand(() -> {
+            m_lift.switchState();
         }));
 
 
@@ -96,7 +101,7 @@ public class TestingOpMode extends CommandOpMode { // remember guy on discord wh
         register(m_susan);
 
         m_drive.setDefaultCommand(m_driveCommand);
-        m_lift.setDefaultCommand(m_manualANDPid);
+        m_lift.setDefaultCommand(m_liftStateMachine);
         m_susan.setDefaultCommand(m_spinCommand);
     }
     public void run() {
@@ -115,6 +120,7 @@ public class TestingOpMode extends CommandOpMode { // remember guy on discord wh
         telemetry.addData("pos", m_lift.getEncoder());
         telemetry.addData("power", m_lift.getPower());
         telemetry.addData("level", componentConstants.currentLevel);
+        telemetry.addData("state", liftStateMachine.liftState);
         telemetry.update();
     }
 }

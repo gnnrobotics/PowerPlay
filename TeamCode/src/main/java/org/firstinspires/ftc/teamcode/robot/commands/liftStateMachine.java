@@ -54,7 +54,6 @@ public class liftStateMachine extends CommandBase {
         m_LiftSubsystem = subsystem;
         m_left = left;
         m_right = right;
-        togglePID = () -> true;
 
         p = () -> 0.05;
         i = () -> 0;
@@ -92,12 +91,7 @@ public class liftStateMachine extends CommandBase {
                 break;
         }
 
-        double liftPosition = m_LiftSubsystem.getEncoder();
-        controller.setPID(p.getAsDouble(), i.getAsDouble(), d.getAsDouble());
-        controller.setTolerance(pidTolerance);
-        double currentTarget = target.getAsDouble();
-        double pid = controller.calculate(liftPosition, currentTarget);
-        double power = pid + mg.getAsDouble();
+
 
         switch (liftState) {
             case LIFT_START:
@@ -117,7 +111,7 @@ public class liftStateMachine extends CommandBase {
                 }
                 break;
             case LIFT_PID:
-                m_LiftSubsystem.setSpecificHeight(power);
+                pid();
 
                 if (controller.atGoal()) {
                     liftTimer.reset();
@@ -143,6 +137,8 @@ public class liftStateMachine extends CommandBase {
                 }
                 break;
             case LIFT_RETRACT:
+                pid();
+
                 m_LiftSubsystem.setLevel(DOWN);
 
                 if (controller.atGoal()) {
@@ -166,5 +162,15 @@ public class liftStateMachine extends CommandBase {
 
     public void end() {
         endPosition = target.getAsDouble();
+    }
+    public void pid() {
+        double liftPosition = m_LiftSubsystem.getEncoder();
+        controller.setPID(p.getAsDouble(), i.getAsDouble(), d.getAsDouble());
+        controller.setTolerance(pidTolerance);
+        double currentTarget = target.getAsDouble();
+        double pid = controller.calculate(liftPosition, currentTarget);
+        double power = pid + mg.getAsDouble();
+
+        m_LiftSubsystem.setSpecificHeight(power);
     }
 }
