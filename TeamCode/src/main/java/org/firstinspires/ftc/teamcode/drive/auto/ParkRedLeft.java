@@ -65,6 +65,7 @@ public class ParkRedLeft extends CommandOpMode {
         TrajectorySequence parkRight = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-11.81, -61.50))
                 .lineTo(new Vector2d(-13.50, -24.94))
+                .turn(3.141592)
                 .build();
         TrajectorySequence parkCenter = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-36.19, -24.56))
@@ -72,6 +73,7 @@ public class ParkRedLeft extends CommandOpMode {
         TrajectorySequence parkLeft = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-58, -63))
                 .lineTo(new Vector2d(-58, -36))
+                .turn(3.141592)
                 .build();
 
         m_signalPark = new SelectCommand(

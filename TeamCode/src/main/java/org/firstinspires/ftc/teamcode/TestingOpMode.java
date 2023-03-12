@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SelectCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -65,8 +66,8 @@ public class TestingOpMode extends CommandOpMode { // remember guy on discord wh
         m_grabCommand = new Grab(m_claw);
         m_releaseCommand = new Release(m_claw);
 
-        m_lift = new LiftSubsystem(hardwareMap, "Lift");
-        m_manualANDPid = new SequentialCommandGroup(new setSpecificHeight(m_lift, () -> m_driverOp.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), () -> m_driverOp.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)), new liftPIDCommand(m_lift, () -> m_coOp.getButton(GamepadKeys.Button.A)));
+        m_lift = new LiftSubsystem(hardwareMap, "Lift", false);
+        m_heightCommand = new setSpecificHeight(m_lift, () -> m_driverOp.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), () -> m_driverOp.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER));
 
         m_coOp.getGamepadButton(GamepadKeys.Button.X).whenPressed(new InstantCommand(() -> {
             m_lift.setLevel(componentConstants.Level.DOWN);
@@ -86,7 +87,10 @@ public class TestingOpMode extends CommandOpMode { // remember guy on discord wh
 
 
         m_susan = new SusanSubsystem(hardwareMap, "Susan");
-        m_spinCommand = new spinSusan(m_susan, () -> m_driverOp.getButton(GamepadKeys.Button.LEFT_BUMPER), () -> m_driverOp.getButton(GamepadKeys.Button.RIGHT_BUMPER));
+        m_spinCommand = new spinSusan(
+                m_susan,
+                () -> m_driverOp.getButton(GamepadKeys.Button.LEFT_BUMPER), () -> m_driverOp.getButton(GamepadKeys.Button.RIGHT_BUMPER),
+                () -> m_coOp.getButton(GamepadKeys.Button.LEFT_BUMPER), () -> m_coOp.getButton(GamepadKeys.Button.RIGHT_BUMPER));
         m_fineDriveButton = new GamepadButton(m_coOp, GamepadKeys.Button.B).whenHeld(m_fineDriveCommand);
         m_toggleButton = new GamepadButton(m_driverOp, GamepadKeys.Button.A).toggleWhenPressed(m_grabCommand, m_releaseCommand);
 
@@ -96,7 +100,7 @@ public class TestingOpMode extends CommandOpMode { // remember guy on discord wh
         register(m_susan);
 
         m_drive.setDefaultCommand(m_driveCommand);
-        m_lift.setDefaultCommand(m_manualANDPid);
+        m_lift.setDefaultCommand(m_heightCommand);
         m_susan.setDefaultCommand(m_spinCommand);
     }
     public void run() {

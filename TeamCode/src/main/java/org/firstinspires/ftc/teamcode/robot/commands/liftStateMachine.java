@@ -35,10 +35,9 @@ public class liftStateMachine extends CommandBase {
     private DoubleSupplier p, i, d, mg, maxVelocity, maxAcceleration;
     private DoubleSupplier target;
     private ProfiledPIDController controller;
-    private BooleanSupplier togglePID;
     private final DoubleSupplier m_left;
     private final DoubleSupplier m_right;
-    private final double pidTolerance = 5;
+    private final double pidTolerance;
     private ElapsedTime liftTimer = new ElapsedTime();
 
     private enum LiftState {
@@ -57,10 +56,12 @@ public class liftStateMachine extends CommandBase {
 
         p = () -> 0.05;
         i = () -> 0;
-        d = () -> 0.00045;
-        mg = () -> 0.01;
-        maxVelocity = () -> 13000;
-        maxAcceleration = () -> 3600;
+        d = () -> 0.00013;
+        mg = () -> 0;
+        maxVelocity = () -> 36000;
+        maxAcceleration = () -> 14500;
+
+        pidTolerance = m_LiftSubsystem.getPidTolerance();
 
         addRequirements(m_LiftSubsystem);
     }
@@ -91,8 +92,6 @@ public class liftStateMachine extends CommandBase {
                 break;
         }
 
-
-
         switch (liftState) {
             case LIFT_START:
                 if (m_left.getAsDouble() == 1 && m_right.getAsDouble() == 1) {
@@ -113,11 +112,8 @@ public class liftStateMachine extends CommandBase {
             case LIFT_PID:
                 pid();
 
-                if (controller.atGoal()) {
-                    liftTimer.reset();
-                    if (liftTimer.seconds() >= liftTime) {
-                        liftState = LiftState.LIFT_POSITION;
-                    }
+                if (m_LiftSubsystem.getEncoder() < target.getAsDouble() + pidTolerance && m_LiftSubsystem.getEncoder() > target.getAsDouble() - pidTolerance) {
+                    liftState = LiftState.LIFT_POSITION;
                 }
                 break;
             case LIFT_POSITION:
@@ -141,11 +137,8 @@ public class liftStateMachine extends CommandBase {
 
                 m_LiftSubsystem.setLevel(DOWN);
 
-                if (controller.atGoal()) {
-                    liftTimer.reset();
-                    if (liftTimer.seconds() >= liftTime) {
-                        liftState = LiftState.LIFT_START;
-                    }
+                if (m_LiftSubsystem.getEncoder() < target.getAsDouble() + pidTolerance && m_LiftSubsystem.getEncoder() > target.getAsDouble() - pidTolerance) {
+                    liftState = LiftState.LIFT_START;
                 }
                 break;
             default:
@@ -153,9 +146,12 @@ public class liftStateMachine extends CommandBase {
                 liftState = LiftState.LIFT_START;
         }
 
-        if (m_LiftSubsystem.getInitialStateRequest() && liftState != LiftState.LIFT_START) {
+        if ((m_left.getAsDouble() == 1 || m_right.getAsDouble() == 1) && liftState != LiftState.LIFT_START) {
             m_LiftSubsystem.initialStateRequest();
             liftState = LiftState.LIFT_START;
+        }
+        if(liftState == LiftState.LIFT_PID && (m_left.getAsDouble() == 1 || m_right.getAsDouble() == 1)) {
+            liftState = LiftState.LIFT_POSITION;
         }
 
     }

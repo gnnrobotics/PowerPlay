@@ -6,7 +6,7 @@ public class componentConstants { // use 3123's code
 
     // Drive constant
 
-    public static final double normalMotor = 0.8;
+    public static final double normalMotor = 1;
     public static final double fineMotor = 0.1;
 
     // Servo constants
@@ -16,12 +16,12 @@ public class componentConstants { // use 3123's code
     public static final double rightOpen = 0.85;
 
     // Lift constants
-    public static final double liftSpeed = 0.75;
+    public static final double liftSpeed = 1;
     public static final DoubleSupplier downLevel = () -> 0;
     public static final DoubleSupplier groundJLevel = () -> 150;
     public static final DoubleSupplier lowLevel = () -> 1650;
     public static final DoubleSupplier mediumLevel = () -> 2850;
-    public static final DoubleSupplier highLevel = () -> 4000;
+    public static final DoubleSupplier highLevel = () -> 3950;
     public static DoubleSupplier currentTarget = downLevel;
 
     public static double liftTime = 1;
@@ -38,7 +38,26 @@ public class componentConstants { // use 3123's code
 
     public static Level currentLevel = Level.DOWN;
 
-    // Susan constant
+    public static DoubleSupplier encoderValue;
+    public static double pidTolerance = 5;
+
+    // Susan constants
     public static final double susanSpeed = 0.35;
-    // See respective lift and susan PIDs for their constants—putting them here would be too messy
+
+    public enum susanLevel {
+        FRONT,
+        BACK,
+        SIDE
     }
+
+    public static susanLevel susanCurrentLevel = susanLevel.BACK;
+
+    public static final DoubleSupplier frontLevel = () -> 0;
+    public static final DoubleSupplier sideLevel = () -> -135;
+    public static final DoubleSupplier backLevel = () -> -270;
+
+    // See respective lift and susan PIDs for their constants—putting them here would be too messy
+
+
+    }
+

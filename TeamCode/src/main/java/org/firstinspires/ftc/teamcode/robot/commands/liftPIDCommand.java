@@ -34,59 +34,42 @@ public class liftPIDCommand extends CommandBase {
     // private final double ticks_in_degree = 537.7/360;
 
     private DoubleSupplier p, i, d, mg, maxVelocity, maxAcceleration;
-    private DoubleSupplier target;
     private ProfiledPIDController controller;
-    private BooleanSupplier togglePID;
+    private boolean customTarget = false;
+    private double pidTolerance;
 
     public liftPIDCommand(LiftSubsystem subsystem, DoubleSupplier targetPosition) {
         m_LiftSubsystem = subsystem;
-        togglePID = () -> true;
-        target = targetPosition;
+        m_LiftSubsystem.setTarget(targetPosition);
 
         p = () -> 0.05;
         i = () -> 0;
-        d = () -> 0.00045;
-        mg = () -> 0.01;
-        maxVelocity = () -> 13000;
-        maxAcceleration = () -> 3600;
+        d = () -> 0.00013;
+        mg = () -> 0.00;
+        maxVelocity = () -> 16250;
+        maxAcceleration = () -> 10000;
+
+        pidTolerance = m_LiftSubsystem.getPidTolerance();
 
         addRequirements(m_LiftSubsystem);
     }
-    public liftPIDCommand(LiftSubsystem subsystem, BooleanSupplier onOrOff) {
+    public liftPIDCommand(LiftSubsystem subsystem) {
         m_LiftSubsystem = subsystem;
-        togglePID = onOrOff;
-
-        componentConstants.Level level = componentConstants.currentLevel;
-
-        switch(level) {
-            case DOWN:
-                target = downLevel;
-                break;
-            case GROUND_J:
-                target = groundJLevel;
-                break;
-            case LOW:
-                target = lowLevel;
-                break;
-            case MEDIUM:
-                target = mediumLevel;
-                break;
-            case HIGH:
-                target = highLevel;
-                break;
-        }
 
         p = () -> 0.05;
         i = () -> 0;
-        d = () -> 0.00045;
-        mg = () -> 0.001;
+        d = () -> 0.00013;
+        mg = () -> 0.00;
+        maxVelocity = () -> 16250;
+        maxAcceleration = () -> 10000;
+
+        pidTolerance = m_LiftSubsystem.getPidTolerance();
 
         addRequirements(m_LiftSubsystem);
     }
     public liftPIDCommand(LiftSubsystem subsystem, DoubleSupplier targetPosition, DoubleSupplier pInput, DoubleSupplier iInput, DoubleSupplier dInput, DoubleSupplier mgInput, DoubleSupplier maxVelInput, DoubleSupplier maxAccelInput) {
         m_LiftSubsystem = subsystem;
-        togglePID = () -> true;
-        target = targetPosition;
+        m_LiftSubsystem.setTarget(targetPosition);
 
         p = pInput;
         i = iInput;
@@ -94,6 +77,8 @@ public class liftPIDCommand extends CommandBase {
         mg = mgInput;
         maxVelocity = maxVelInput;
         maxAcceleration = maxAccelInput;
+
+        pidTolerance = m_LiftSubsystem.getPidTolerance();
 
         addRequirements(m_LiftSubsystem);
     }
@@ -105,20 +90,19 @@ public class liftPIDCommand extends CommandBase {
 
     public void execute()
     {
-        if(togglePID.getAsBoolean())
-        {
-            controller.setPID(p.getAsDouble(), i.getAsDouble(), d.getAsDouble());
-            double liftPosition = m_LiftSubsystem.getEncoder();
-            double currentTarget = target.getAsDouble();
-            double pid = controller.calculate(liftPosition, currentTarget);
+        double target = m_LiftSubsystem.getTarget().getAsDouble();
 
-            double power = pid + mg.getAsDouble();
+        controller.setPID(p.getAsDouble(), i.getAsDouble(), d.getAsDouble());
+        double liftPosition = m_LiftSubsystem.getEncoder();
+        double pid = controller.calculate(liftPosition, target);
 
-            m_LiftSubsystem.setSpecificHeight(power);
-        }
+        double power = pid + mg.getAsDouble();
+
+        m_LiftSubsystem.setSpecificHeight(power);
+
     }
 
     public void end() {
-        endPosition = target.getAsDouble();
+        endPosition = m_LiftSubsystem.getTarget().getAsDouble();
     }
 }

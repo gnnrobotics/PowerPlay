@@ -46,7 +46,7 @@ public class LiftPIDTesting extends CommandOpMode {
         m_driverOp = new GamepadEx(gamepad1);
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        m_lift = new LiftSubsystem(hardwareMap, "Lift");
+        m_lift = new LiftSubsystem(hardwareMap, "Lift", false);
         m_claw = new ClawSubsystem(hardwareMap);
         m_liftPID = new liftPIDCommand(m_lift, () -> target, () -> p, () -> i, () -> d, () -> mg, () -> maxVel, () -> maxAccel);
 
@@ -66,6 +66,7 @@ public class LiftPIDTesting extends CommandOpMode {
         telemetry.addData("pos", m_lift.getEncoder());
         telemetry.addData("target", target);
         telemetry.addData("power", m_lift.getPower());
+        telemetry.addData("useState",m_lift.getUseState());
         telemetry.update();
     }
 }

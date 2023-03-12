@@ -62,7 +62,7 @@ public class PIDOpMode extends CommandOpMode { // remember guy on discord who ga
         m_grabCommand = new Grab(m_claw);
         m_releaseCommand = new Release(m_claw);
 
-        m_lift = new LiftSubsystem(hardwareMap, "Lift");
+        m_lift = new LiftSubsystem(hardwareMap, "Lift", false);
         m_liftStateMachine = new liftStateMachine(
                 m_lift,
                 () -> m_driverOp.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER),
@@ -78,20 +78,20 @@ public class PIDOpMode extends CommandOpMode { // remember guy on discord who ga
         m_coOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(new InstantCommand(() -> {
             m_lift.setLevel(componentConstants.Level.MEDIUM);
         }));
-        m_coOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(new InstantCommand(() -> {
+        m_coOp.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(new InstantCommand(() -> {
             m_lift.setLevel(componentConstants.Level.HIGH);
         }));
-        m_coOp.getGamepadButton(GamepadKeys.Button.A).whenPressed(new InstantCommand(() -> {
-            m_lift.initialStateRequest();
-        }));
 
-        m_driverOp.getGamepadButton(GamepadKeys.Button.B).whenPressed(new InstantCommand(() -> {
+        m_coOp.getGamepadButton(GamepadKeys.Button.A).whenPressed(new InstantCommand(() -> {
             m_lift.switchState();
         }));
 
 
         m_susan = new SusanSubsystem(hardwareMap, "Susan");
-        m_spinCommand = new spinSusan(m_susan, () -> m_driverOp.getButton(GamepadKeys.Button.LEFT_BUMPER), () -> m_driverOp.getButton(GamepadKeys.Button.RIGHT_BUMPER));
+        m_spinCommand = new spinSusan(
+                m_susan,
+                () -> m_driverOp.getButton(GamepadKeys.Button.LEFT_BUMPER), () -> m_driverOp.getButton(GamepadKeys.Button.RIGHT_BUMPER),
+                () -> m_coOp.getButton(GamepadKeys.Button.LEFT_BUMPER), () -> m_coOp.getButton(GamepadKeys.Button.RIGHT_BUMPER));
         m_fineDriveButton = new GamepadButton(m_coOp, GamepadKeys.Button.B).whenHeld(m_fineDriveCommand);
         m_toggleButton = new GamepadButton(m_driverOp, GamepadKeys.Button.A).toggleWhenPressed(m_grabCommand, m_releaseCommand);
 

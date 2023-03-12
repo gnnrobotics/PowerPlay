@@ -32,44 +32,24 @@ public class susanPIDCommand extends CommandBase {
 // 135 ticks = 90 degrees
         target = targetPosition;
 
-        p = () -> 0.10;
+        p = () -> 0.08;
         i = () -> 0;
-        d = () -> 0.00001;
-        maxVelocity = () -> 400;
-        maxAcceleration = () -> 200;
+        d = () -> 0.0000001;
+        maxVelocity = () -> 800;
+        maxAcceleration = () -> 800;
 
         addRequirements(susanSubsystem);
     }
     public susanPIDCommand(SusanSubsystem subsystem) {
         susanSubsystem = subsystem;
 
-        nowLevel = componentConstants.currentLevel;
+        target = () -> 0;
 
-        if(nowLevel == componentConstants.Level.DOWN)
-        {
-            target = downLevel;
-        }
-        else if(nowLevel == componentConstants.Level.GROUND_J) {
-            target = groundJLevel;
-        }
-        else if(nowLevel == componentConstants.Level.LOW) {
-            target = lowLevel;
-        }
-        else if(nowLevel == componentConstants.Level.MEDIUM) {
-            target = mediumLevel;
-        }
-        else if(nowLevel == componentConstants.Level.HIGH) {
-            target = highLevel;
-        }
-        else {
-            target = downLevel;
-        }
-
-        p = () -> 0.10;
+        p = () -> 0.08;
         i = () -> 0;
-        d = () -> 0.00001;
-        maxVelocity = () -> 400;
-        maxAcceleration = () -> 200;
+        d = () -> 0.0000001;
+        maxVelocity = () -> 800;
+        maxAcceleration = () -> 800;
 
         addRequirements(susanSubsystem);
     }

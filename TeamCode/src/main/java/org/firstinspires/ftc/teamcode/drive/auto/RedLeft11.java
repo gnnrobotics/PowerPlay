@@ -102,7 +102,7 @@ public class RedLeft11 extends CommandOpMode {
         m_grabCommand = new Grab(m_claw);
         m_releaseCommand = new Release(m_claw);
 
-        m_lift = new LiftSubsystem(hardwareMap, "Lift");
+        m_lift = new LiftSubsystem(hardwareMap, "Lift", true);
         m_levelCommand = new liftPIDCommand(m_lift, m_lift.getTarget());
 
         m_susan = new SusanSubsystem(hardwareMap, "Susan");
